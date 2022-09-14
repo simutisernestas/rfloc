@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
+from scipy.optimize import least_squares
 from filterpy.kalman import KalmanFilter
 
 
@@ -28,56 +29,58 @@ class Agent:
     def get_state(self) -> np.array:
         return self.__x
 
-    # TODO: x0 is very important for convergence !!!
-    def triangulate_pos(self, beacons: list, debug: bool = False, x0=None):
-        def error(x, c, r):
-            return sum([(np.linalg.norm(x - c[i]) - r[i]) ** 2 for i in range(len(c))])
+    def triangulate_pos(self, beacons: list):
+        A = np.zeros((3, 3))
 
         def dist(a, b):
             return np.linalg.norm(a - b, 2)
+        ds = np.array(  # distances to beacons (ground truth)
+            # [dist(agent.get_state()[:3], b.get_pos())for b in beacons])
+            [dist(agent.get_state()[:3], b.get_pos()) + np.random.random() for b in beacons])
 
-        distances_to_station = np.array(  # TODO: increasing noise to +-0.5m brakes filter
-            [dist(self.__x[:3], b.get_pos() + (np.random.random()-.5)*.1) for b in beacons])
-        stations_coordinates = [b.get_pos().T for b in beacons]
-        l = len(stations_coordinates)  # number of stations
-        S = np.sum(distances_to_station)
-        # compute weight vector for initial guess
-        W = [((l - 1) * S) / (S - w) for w in distances_to_station]
-        # get initial guess of point location
-        if x0 is None:
-            x0 = sum([W[i] * stations_coordinates[i] for i in range(l)])
-        # optimize distance from signal origin to border of spheres
-        sol = minimize(error, x0, args=(stations_coordinates,
-                       distances_to_station), method='Nelder-Mead')
-        # if not sol.success:
-        #     raise Exception("Optimization failed!")
-        if debug:
-            print(W)
-            print(x0)
-            print(distances_to_station)
-            print(stations_coordinates)
-            print(sol)
-        # if np.linalg.norm(sol.x - np.ones((3,))) > 1e-3:
-        #     print(np.linalg.norm(sol.x - np.ones((3,))))
-        return sol.x.reshape(3, 1), sol.success
+        bp = [b.get_pos() for b in beacons]
+
+        A[0][0] = (bp[1] - bp[0])[0]
+        A[1][0] = (bp[2] - bp[0])[0]
+        A[2][0] = (bp[3] - bp[0])[0]
+
+        A[0][1] = (bp[1] - bp[0])[1]
+        A[1][1] = (bp[2] - bp[0])[1]
+        A[2][1] = (bp[3] - bp[0])[1]
+
+        A[0][2] = (bp[1] - bp[0])[2]
+        A[1][2] = (bp[2] - bp[0])[2]
+        A[2][2] = (bp[3] - bp[0])[2]
+
+        b = np.zeros((3, 1))
+
+        k1 = np.sum(bp[0]*bp[0])
+        k2 = np.sum(bp[1]*bp[1])
+        k3 = np.sum(bp[2]*bp[2])
+        k4 = np.sum(bp[3]*bp[3])
+
+        b[0] = (ds[0]**2 - ds[1]**2 - k1 + k2)
+        b[1] = (ds[0]**2 - ds[2]**2 - k1 + k3)
+        b[2] = (ds[0]**2 - ds[3]**2 - k1 + k4)
+
+        return np.linalg.inv(2*A) @ b
 
     def advance(self, F) -> None:
         self.__x = F @ self.__x
 
 
-def mapp(beacons: list, agent: Agent = None, path=None):
+def mapp(beacons: list, ax0: np.array, path: np.array, gt_path: np.array):
     legends = []
+    legends.append("Path")
+    legends.append("GT")
     for i, b in enumerate(beacons):
         x = b.get_pos()
         plt.scatter(x[0], x[1])
         legends.append(str(i))
-    if agent is not None:
-        x = agent.get_state()
-        plt.scatter(x[0], x[1], marker='x')
-        legends.append("Agent")
-    if path is not None:
-        for p in path:
-            plt.scatter(p[0], p[1], color='r')
+    plt.scatter(ax0[0], ax0[1], marker='x', s=200)
+    legends.append("Agent")
+    plt.plot(path[:, 0], path[:, 1])
+    plt.plot(gt_path[:, 0], gt_path[:, 1])
     plt.legend(legends)
     plt.show()
 
@@ -104,20 +107,15 @@ if __name__ == '__main__':
         r = np.random.random((3, 1))
         r -= .5
         r *= 100
-        r[2][0] = 0
+        r[2][0] = np.random.random() * 3
         return Beacon(x0=r)
-
     beacons = [gen_beacon_on_the_groud() for _ in range(4)]
-    agent = Agent(x0=np.ones((9, 1)))
 
-    # TODO: test case for sanity
-    # beacons = [
-    #     Beacon(x0=[1, 1, 1]),
-    #     Beacon(x0=[-1, 1, 1]),
-    #     Beacon(x0=[-1, -1, -1]),
-    #     Beacon(x0=[1, -1, 1])
-    # ]
-    # print(agent.triangulate_pos(beacons))
+    ax0 = np.ones((9, 1))
+    ax0[:3] = (np.random.random((3, 1)) - .5) * 50
+    if ax0[2] < 0:  # above ground
+        ax0[2] *= -1
+    agent = Agent(x0=ax0.copy())
 
     f = KalmanFilter(dim_x=9, dim_z=3)
     f.x = agent.get_state()
@@ -151,38 +149,27 @@ if __name__ == '__main__':
     f.H[2][2] = 1
 
     # The measurement uncertainty.
-    f.R *= 1
+    f.R *= 300
 
-    # x = agent.get_state()
     path = []
+    gt_path = []
     counter = 0
     while True:
         # ground truth based on physics
         agent.advance(F)
+        gt_path.append(agent.get_state()[:2])
         if counter > 1000:
             break
         counter += 1
-
         f.predict()
-        (Z, success) = agent.triangulate_pos(beacons, x0=f.x[:3].T)
-        if success:
-            f.update(Z)
-        # if np.linalg.norm(f.x[:3] - agent.get_state()[:3]) > 1:
-        print(np.linalg.norm(f.x[:3] - agent.get_state()[:3]))
-        print(np.linalg.norm(Z - agent.get_state()[:3].T))
-        print('\n')
+        Z = agent.triangulate_pos(beacons)
+        f.update(Z)
+        path.append(f.x)
 
-        # x, P = predict(x, P, F, u)
-        # (Z, success) = agent.triangulate_pos(beacons)
-        # if success:
-        #     x, P = update(x, P, Z, H, R)
-        #     # agent.update(x)
-        # path.append(x[:2])
-        # print(x, np.max(P), Z.T, success)
-        # agent.update(x)
-
+    # print(Z, agent.get_state()[:3])
+    print(f"||X - GT|| = {np.linalg.norm(f.x[:3] - agent.get_state()[:3])}")
     print(agent.get_state(), '\n\n', f.x)
-    # path = np.array(path)
-    # plt.scatter(path[:, 0], path[:, 1])
-    # plt.show()
-    # mapp(beacons, path=path)
+
+    path = np.array(path)
+    gt_path = np.array(gt_path)
+    mapp(beacons, ax0, path, gt_path)
