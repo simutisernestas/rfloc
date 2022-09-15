@@ -111,10 +111,11 @@ if __name__ == '__main__':
         return Beacon(x0=r)
     beacons = [gen_beacon_on_the_groud() for _ in range(4)]
 
-    ax0 = np.ones((9, 1))
+    ax0 = np.zeros((9, 1))
     ax0[:3] = (np.random.random((3, 1)) - .5) * 50
     if ax0[2] < 0:  # above ground
         ax0[2] *= -1
+    ax0[3] = 10
     agent = Agent(x0=ax0.copy())
 
     f = KalmanFilter(dim_x=9, dim_z=3)
@@ -149,24 +150,34 @@ if __name__ == '__main__':
     f.H[2][2] = 1
 
     # The measurement uncertainty.
-    f.R *= 300
+    f.R *= 10
 
     path = []
     gt_path = []
-    counter = 0
-    while True:
-        # ground truth based on physics
-        agent.advance(F)
-        gt_path.append(agent.get_state()[:2])
-        if counter > 1000:
-            break
-        counter += 1
-        f.predict()
-        Z = agent.triangulate_pos(beacons)
-        f.update(Z)
-        path.append(f.x)
 
-    # print(Z, agent.get_state()[:3])
+    for i in range(4):
+        counter = 0
+        while True:
+            # ground truth based on physics
+            agent.advance(F)
+            gt_path.append(agent.get_state()[:2])
+            if counter > 100:
+                break
+            counter += 1
+            f.predict()
+            Z = agent.triangulate_pos(beacons)
+            f.update(Z)
+            path.append(f.x)
+        state = agent.get_state().copy()
+        state[3:6] = 0
+        if i == 0:
+            state[4] = 10
+        elif i == 1:
+            state[3] = -20
+        elif i == 2:
+            state[4] = -10
+        agent.update(state)
+
     print(f"||X - GT|| = {np.linalg.norm(f.x[:3] - agent.get_state()[:3])}")
     print(agent.get_state(), '\n\n', f.x)
 
