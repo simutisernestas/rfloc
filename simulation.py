@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 from scipy.optimize import least_squares
 from filterpy.kalman import KalmanFilter
-
+from typing import List
 
 class Beacon:
 
@@ -29,7 +29,7 @@ class Agent:
     def get_state(self) -> np.array:
         return self.__x
 
-    def triangulate_pos(self, beacons: list):
+    def triangulate_pos(self, beacons: List[Beacon]):
         A = np.zeros((3, 3))
 
         def dist(a, b):
@@ -69,7 +69,7 @@ class Agent:
         self.__x = F @ self.__x
 
 
-def mapp(beacons: list, ax0: np.array, path: np.array, gt_path: np.array):
+def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray):
     legends = []
     legends.append("Path")
     legends.append("GT")
@@ -101,7 +101,37 @@ def predict(x, P, F, u):
     return (Xprime, Pprime)
 
 
+def dist_jac(x_op: np.ndarray, beacons: List[Beacon]):
+    """    
+    pr - robot position
+    pbi = beacon_i position
+    J = [
+      d/dx h(x) = norm(pr - pb1), 
+      d/dx h(x) = norm(pr - pb2),
+      ... 
+      d/dx h(x) = norm(pr - pbn),
+    ]
+    first row of J (distance function h(x) to the beacon 1):
+    -(bx - x)/((bx - x)^2 + (by - y)^2 + (bz - z)^2)^(1/2)
+    -(by - y)/((bx - x)^2 + (by - y)^2 + (bz - z)^2)^(1/2)
+    -(bz - z)/((bx - x)^2 + (by - y)^2 + (bz - z)^2)^(1/2)
+
+    Parameters
+    ----------
+    x_op : np.ndarray
+        operating point (3,1), at the same time it's agent 
+        previous position.
+    """
+    # pr = agent.get_state()[:3]
+    H = np.zeros((len(beacons),3))
+    for i,b in enumerate(beacons):
+        H[i] = ((x_op - b.get_pos()) / np.linalg.norm(x_op - b.get_pos())).T
+    return H
+
+
 if __name__ == '__main__':
+
+
     def gen_beacon_on_the_groud():
         # point
         r = np.random.random((3, 1))
@@ -110,6 +140,11 @@ if __name__ == '__main__':
         r[2][0] = np.random.random() * 3
         return Beacon(x0=r)
     beacons = [gen_beacon_on_the_groud() for _ in range(4)]
+
+    H = dist_jac(np.ones((3,1)), beacons)
+    print(H)
+    exit()
+
 
     ax0 = np.zeros((9, 1))
     ax0[:3] = (np.random.random((3, 1)) - .5) * 50
