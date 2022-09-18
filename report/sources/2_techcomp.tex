@@ -1,0 +1,54 @@
+
+RF (radio frequency) based positioning problem is concerned with inferring agent/robot position in space from distance measurements to a number of known static or dynamic beacons/landmarks. For instance, in three dimensional case position can be computed by having at least three distance measurements. Technique for doing this is called multilateration.
+
+The chapter is divided in a following way: first describing general methods of measuring distance between two RF devices/antennas, secondly investigating existing protocols making measurements and lastly selecting an algorithm to iteratively compute and track position of a robot over time.
+
+\subsection{Range measurement methods}
+
+Literature points out two main methods for making distance measurements. The two are: RSSI (Received Signal Strength Indication) and RTT (Round Trip Time).
+
+\subsubsection{RSSI}
+
+\subsubsection{RTT}
+AoA, ToA, TDoA
+
+% https://en.wikipedia.org/wiki/Free-space_path_loss
+
+\subsection{Comparison of RF technologies for positioning}
+
+There are many existing protocols/technologies to exchange data between devices over the air i.e. by transmitting it over electromagnetic waves. In this chapter, a few of most popular ones will be reviewed in terms of how suitable each of them is for positioning applications. Namely, paper investigates WiFi, UWB (Ultra Wide Band) and BLE (Bluetooth Low Energy) protocols.
+
+\subsubsection{WiFi}
+
+FTM RTT: RTT could be obtained by FTM protocol but is difficult to obtain bc hardware support is very limited. Even then requires quite a bit of effort to install required driver, firmaware, kernel version. The distance measurement is not that precise. Best case scenario gives 1-2m accuracy which is nice but more crude estimation would also work.
+% https://www.banshee-navigation.eu/blog/posts/what_is_wi-fi_rtt
+% https://www.winlab.rutgers.edu/~gruteser/projects/ftm/Setups.htm
+
+Positioning base on WiFi signal strength is way easier. Basically could be implemented with any WiFi card without spending additional time on setup. Accuracy is worse ~10m. But meets the requirements and prob is worth trying first before going to alternatives. Turns out that the distance to signal curve flattens out at around 20m and cannot measure distances beyond that...
+
+So wifi frequency is max 80MHz which in time based methods alone results in max theoretical distance resolution of 3.5m of time based methods.
+
+% TODO:
+% Measuring Round Trip Times to Determine the Distance Between WLAN Nodes 803 pdf page; data collection & processing https://link.springer.com/content/pdf/10.1007/b136094.pdf
+% The resolution of these hardware time stamps, which are implemented in most current WLAN products, is 1 μs corresponding to 300 m. :D and they  don't say how they get those hardware timestamps either, mistery still.
+
+% TODO:
+% why some papers say that distance resolution is dependant on bandwidth? even though the wifi freq is 2.4 of 5 GHz. How come the distance resolution calculation only takes in bandwidth for example 20MHz or 40MHz???
+
+% https://github.com/domienschepers/wifi-ftm
+
+\subsubsection{BLE}
+
+Easily available but no support for precision time stamping...
+
+\subsubsection{UWB}
+
+How does UWB solve time stamping?
+% https://www.mouser.dk/ProductDetail/Qorvo/DWM3000EVB?qs=iLbezkQI%252BsgO%252Bhh8kPU5Xg%3D%3D
+% https://www.mouser.dk/new/qorvo/qorvo-dws3000evb-arduino-shield/
+% https://github.com/Makerfabs/Makerfabs-ESP32-UWB
+
+
+\subsection{Position from distance measurement}
+
+However, solution (from 3 beacons) is not unique and adding fourth one allows to come up with a distinctive robot position easier.
