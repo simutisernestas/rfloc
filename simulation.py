@@ -1,12 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.optimize import minimize
-from scipy.optimize import least_squares
-from filterpy.kalman import KalmanFilter
-from filterpy.common import Q_discrete_white_noise
+# from scipy.optimize import minimize
+# from scipy.optimize import least_squares
+# from filterpy.kalman import KalmanFilter
+# from filterpy.common import Q_discrete_white_noise
 from filterpy.kalman import ExtendedKalmanFilter
 from typing import List
+from typing import Callable
 
+
+MYEFK = True
 
 class Beacon:
 
@@ -105,19 +108,21 @@ def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray):
     plt.show()
 
 
-def update(x, P, Z, H, R):
-    y = Z - H @ x
+def update(x, hx, P, Z, H, R):
+    y = Z - hx
     S = H @ P @ H.T + R
-    K = P @ H.T @ np.linalg.pinv(S)
+    K = P @ H.T @ np.linalg.inv(S)
     Xprime = x + K @ y
     KH = K @ H
-    Pprime = (np.eye(KH.shape[0]) - KH) @ P
+    I_KH = (np.eye(KH.shape[0]) - KH)
+    # Pprime = I_KH @ P @ I_KH.T + K @ R @ K.T
+    Pprime = I_KH @ P
     return (Xprime, Pprime)
 
 
 def predict(x, P, F, u):
     Xprime = F @ x + u
-    Pprime = F @ P @ F.T
+    Pprime = F @ P @ F.T + np.eye(6) # TODO: handle process noise
     return (Xprime, Pprime)
 
 
@@ -142,11 +147,10 @@ def dist_jac(x_op: np.ndarray, beacons: List[Beacon]):
     x_op : np.ndarray (3,1)
         operating point i.e. agent's previous position.
     """
-    H = np.zeros((len(beacons), 3))
+    H = np.zeros((len(beacons), len(x_op)))
     for i, b in enumerate(beacons):
-        H[i] = ((x_op - b.get_pos()) / np.linalg.norm(x_op - b.get_pos())).T
+        H[i][:3] = ((x_op[:3] - b.get_pos()) / np.linalg.norm(x_op[:3] - b.get_pos())).T
     return H
-
 
 if __name__ == '__main__':
     def gen_beacon_on_the_groud():
@@ -170,17 +174,31 @@ if __name__ == '__main__':
     path = []
     gt_path = []
 
-    # build filter
-    rk = ExtendedKalmanFilter(dim_x=3, dim_z=4)
-    # noisy initial guess
-    rk.x = agent.get_state()[:3] + np.random.random((3, 1))*3
-    rk.F = np.eye(3)  # F TODO: include velocity
-    range_std = 5.  # meters
-    rk.R = np.diag([range_std**2]*4)  # TODO: measurement noise
-    rk.P *= 50  # TODO: variance
+    if MYEFK:
+        dim_x = 6
+        dim_z = 4
+        x = agent.get_state()[:6] + np.random.random((6, 1))*3
+        F = np.eye(dim_x)
+        F[0,3] = dt
+        F[1,4] = dt
+        F[2,5] = dt
+        range_std = 1  # meters
+        R = np.diag([range_std**2]*4)
+        P = np.eye(dim_x)
+        P *= 50
+    else:
+        rk = ExtendedKalmanFilter(dim_x=6, dim_z=4)
+        rk.x = agent.get_state()[:6] + np.random.random((6, 1))*3
+        rk.F = np.eye(6)
+        rk.F[0,3] = dt
+        rk.F[1,4] = dt
+        rk.F[2,5] = dt
+        range_std = .5  # meters
+        rk.R = np.diag([range_std**2]*4)
+        rk.P *= 10
 
     def HJacobian_at(x, beacons):
-        return dist_jac(x[:3], beacons)
+        return dist_jac(x[:6], beacons)
 
     def hx(x, beacons):
         h = np.zeros((4, 1))
@@ -198,10 +216,17 @@ if __name__ == '__main__':
                 break
             counter += 1
             z = agent.get_beacon_dists()
-            rk.update(np.array([z]).T, HJacobian_at, hx,
-                      args=(beacons), hx_args=(beacons))
-            path.append(rk.x)
-            rk.predict()
+
+            if MYEFK:
+                (x,P) = update(x, hx(x, beacons), P, np.array([z]).T, HJacobian_at(x, beacons), R)
+                path.append(x)
+                (x,P) = predict(x, P, F, 0)
+            else:
+                rk.update(np.array([z]).T, HJacobian_at, hx,
+                   args=(beacons), hx_args=(beacons))
+                path.append(rk.x)
+                rk.predict()
+ 
         state = agent.get_state().copy()
         state[3:6] = 0
         if i == 0:  # go up at 10 m/s
@@ -212,9 +237,18 @@ if __name__ == '__main__':
             state[4] = -10
         agent.update(state)
 
-    print(f"Var: {np.max(rk.P)}\n"
-          f"Dist: {np.linalg.norm(rk.x[:3] - agent.get_state()[:3])}\n")
-    print(agent.get_state(), '\n\n', rk.x)
+
+    if MYEFK:
+        print(f"Var: {np.max(P)}\n"
+              f"Dist: {np.linalg.norm(x[:3] - agent.get_state()[:3])}\n")
+        print(agent.get_state(), '\n\n', x)
+        print(P)
+    else:
+        print(f"Var: {np.max(rk.P)}\n"
+            #   f"Dist: {np.linalg.norm(x[:3] - agent.get_state()[:3])}\n")
+        f"Dist: {np.linalg.norm(rk.x[:3] - agent.get_state()[:3])}\n")
+        print(agent.get_state(), '\n\n', rk.x)
+        print(rk.P)
 
     path = np.array(path)
     gt_path = np.array(gt_path)
