@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 # from scipy.optimize import least_squares
 # from filterpy.kalman import KalmanFilter
 # from filterpy.common import Q_discrete_white_noise
-from filterpy.kalman import ExtendedKalmanFilter
-from typing import List
-from typing import Callable
+# from filterpy.kalman import ExtendedKalmanFilter
+# from typing import Lists
+# from typing import Callable
 
 
 MYEFK = True
@@ -43,7 +43,7 @@ class Agent:
         return np.array(
             [dist(agent.get_state()[:3], b.get_pos()) + np.random.random() for b in beacons])
 
-    def triangulate_pos(self, beacons: List[Beacon]):
+    def triangulate_pos(self): # , beacons: List[Beacon]
         A = np.zeros((3, 3))
 
         ds = np.array(  # distances to beacons
@@ -126,7 +126,7 @@ def predict(x, P, F, u):
     return (Xprime, Pprime)
 
 
-def dist_jac(x_op: np.ndarray, beacons: List[Beacon]):
+def dist_jac(x_op: np.ndarray, beacons): # , beacons: List[Beacon]
     """    
     pr - robot position
     pbi = beacon_i position
@@ -206,13 +206,13 @@ if __name__ == '__main__':
             h[i] = np.linalg.norm(x[:3] - b.get_pos())
         return h
 
-    for i in range(4):
+    for i in range(1):
         counter = 0
         while True:
             # ground truth based on physics
             agent.advance()
             gt_path.append(agent.get_state()[:2])
-            if counter > 100:
+            if counter > 1000:
                 break
             counter += 1
             z = agent.get_beacon_dists()
@@ -253,3 +253,14 @@ if __name__ == '__main__':
     path = np.array(path)
     gt_path = np.array(gt_path)
     mapp(beacons, ax0, path, gt_path)
+
+
+
+# r**3 variance dependand on distances
+# v cov
+# make the scale of axes in the plot the same, so covariance is seen
+# maybe plot the covariance matrix
+# and think about 3d plotting
+# write some python code to extract the data from tag, through serial connection
+# ask about time line of the project ? can i do the report after new years
+# how does gain traslate distance to pos ??
