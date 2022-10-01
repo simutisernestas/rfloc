@@ -43,13 +43,12 @@ void newRange()
     Serial.print("ts: ");
     Serial.print(ElapsedTime);
     Serial.print("\t from: ");
-    Serial.print(DW1000Ranging.getDistantDevice()->getShortAddress(), HEX);
+    Serial.print(DW1000Ranging.getDistantDevice()->getShortAddress());
     Serial.print("\t Range: ");
     Serial.print(DW1000Ranging.getDistantDevice()->getRange());
-    Serial.print(" m");
-    Serial.print("\t RX power: ");
+    Serial.print("\t RXpower: ");
     Serial.print(DW1000Ranging.getDistantDevice()->getRXPower());
-    Serial.println(" dBm");
+    Serial.print("\n");
     StartTime = millis();
 }
 
