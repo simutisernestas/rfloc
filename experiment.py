@@ -1,20 +1,39 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from getdata import read_measurements
+import time
+
 
 class Beacon:
 
-    def __init__(self, x0=np.zeros((3, 1))) -> None:
+    def __init__(self, x0, id=None) -> None:
+        if x0.shape == (3,) or x0.shape == (1, 3):
+            x0 = x0.reshape((3, 1))
         if x0.shape != (3, 1):
             raise Exception("Wrong state shape!")
         self.__x = x0
+        self.__id = id
+        self.__last_update = 0
+        self.__range = None
+        self.__LIFESPAN = .1  # s
 
     def get_pos(self) -> np.array:
         return self.__x
 
+    def get_id(self) -> np.array:
+        return self.__id
 
-def dist(a, b):
-    return np.linalg.norm(a - b, 2)
+    def update_range(self, distance):
+        self.__range = distance
+        self.__last_update = time.time()
+
+    def get_range(self):
+        if time.time() - self.__last_update > self.__LIFESPAN:
+            self.__range = None
+        return self.__range
+
+    def is_active(self):
+        return self.get_range() is not None
 
 
 class Agent:
@@ -32,7 +51,7 @@ class Agent:
 
     def get_beacon_dists(self, beacons) -> np.array:
         return np.array(
-            [dist(agent.get_state()[:3], b.get_pos()) + np.random.random() for b in beacons])
+            [np.linalg.norm(agent.get_state()[:3] - b.get_pos(), 2) for b in beacons])
 
 
 def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray):
@@ -108,17 +127,33 @@ def hx(x, beacons):
     return h
 
 
+# must be one of the inputs for system
+BEACON_MAP = {
+    "6022": Beacon(np.array([10, 10, 0])),
+    "6023": Beacon(np.array([-10, 10, 0])),
+    "6024": Beacon(np.array([-10, -10, 0])),
+    "6025": Beacon(np.array([10, -10, 0])),
+}
+
 if __name__ == '__main__':
     # initial position at 0
     ax0 = np.zeros((6, 1))
-    agent = Agent(x0=ax0.copy())
+    agent = Agent(x0=ax0)
 
-    beacons = []
-    while len(beacons) < 1:
+    active_beacon_count = 0
+    # initial ranging
+    found_enough_active_beacons = False
+    while not found_enough_active_beacons:
+        # update from measurements
         devices = read_measurements()
-        # TODO: add to the beacons
-        break
-
+        for id, meas in devices.items():
+            BEACON_MAP[id].update_range(meas["Range"])
+        # count active ones
+        active_count = sum([beac.is_active() for _, beac in BEACON_MAP.items()])
+        if active_count >= 4: # 4 is enough
+            found_enough_active_beacons = True
+    
+    print(f"Found {active_count} active beacons. Starting system...")
     exit()
 
     dt = 1e-1
@@ -149,7 +184,7 @@ if __name__ == '__main__':
         break
 
     print(f"Var: {np.max(P)}\n"
-            f"Dist: {np.linalg.norm(x[:3] - agent.get_state()[:3])}\n")
+          f"Dist: {np.linalg.norm(x[:3] - agent.get_state()[:3])}\n")
     print(agent.get_state(), '\n\n', x)
     print(P)
 
