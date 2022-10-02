@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 from getdata import read_measurements
 import time
 
+DIM_X = 6
+DIM_Z = 4
+
 
 class Beacon:
 
@@ -48,10 +51,6 @@ class Agent:
 
     def get_state(self) -> np.array:
         return self.__x
-
-    def get_beacon_dists(self, beacons) -> np.array:
-        return np.array(
-            [np.linalg.norm(agent.get_state()[:3] - b.get_pos(), 2) for b in beacons])
 
 
 def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray):
@@ -127,6 +126,14 @@ def hx(x, beacons):
     return h
 
 
+def getF(dt):
+    F = np.eye(6)
+    F[0, 3] = dt
+    F[1, 4] = dt
+    F[2, 5] = dt
+    return F
+
+
 # must be one of the inputs for system
 BEACON_MAP = {
     "6022": Beacon(np.array([10, 10, 0])),
@@ -135,59 +142,66 @@ BEACON_MAP = {
     "6025": Beacon(np.array([10, -10, 0])),
 }
 
+
+def get_measurements(timeout=.1):
+    start = time.time()
+    found_enough_active_beacons = False
+    while not found_enough_active_beacons and (time.time() - start) < timeout:
+        # update from measurements
+        devices = read_measurements(timeout/2)
+        for id, meas in devices.items():
+            BEACON_MAP[id].update_range(meas["Range"])
+        # count active ones
+        active_count = sum([beac.is_active()
+                           for _, beac in BEACON_MAP.items()])
+        if active_count >= 4:  # 4 is enough
+            found_enough_active_beacons = True
+    return found_enough_active_beacons, np.array([v.get_range() for k, v in BEACON_MAP.items()]).reshape((active_count, 1))
+
+
 if __name__ == '__main__':
     # initial position at 0
     ax0 = np.zeros((6, 1))
     agent = Agent(x0=ax0)
 
-    active_beacon_count = 0
-    # initial ranging
-    found_enough_active_beacons = False
-    while not found_enough_active_beacons:
-        # update from measurements
-        devices = read_measurements()
-        for id, meas in devices.items():
-            BEACON_MAP[id].update_range(meas["Range"])
-        # count active ones
-        active_count = sum([beac.is_active() for _, beac in BEACON_MAP.items()])
-        if active_count >= 4: # 4 is enough
-            found_enough_active_beacons = True
-    
-    print(f"Found {active_count} active beacons. Starting system...")
-    exit()
-
-    dt = 1e-1
+    # initial ranging, find enough beacons to start localization
+    success = False
+    while not success:
+        print("Looking for enough active beacons...")
+        (success, z) = get_measurements(1)
+        print(f"Found {z.shape[0]} active beacons...")
+    print("Starting system...")
 
     path = []
     gt_path = []
 
-    # first stage would be to initialize, see enough beacons to start localization
-
-    dim_x = 6
-    dim_z = 4
-    x = agent.get_state()[:6] + np.random.random((6, 1))*3
-    F = np.eye(dim_x)
-    F[0, 3] = dt
-    F[1, 4] = dt
-    F[2, 5] = dt
+    # initialize filter
     range_std = 1  # meters
     R = np.diag([range_std**2]*4)
-    P = np.eye(dim_x)
+    P = np.eye(DIM_X)
     P *= 50
+    MEAS_TIMEOUT = .1
 
     while True:
-        z = agent.get_beacon_dists()
-        (x, P) = update(x, hx(x, beacons), P, np.array(
-            [z]).T, HJacobian_at(x, beacons), R)
+        # TODO: populate gt_path, from opticon ?
+
+        timestamp = time.time()
+        x = agent.get_state()
+        (success, z) = get_measurements(MEAS_TIMEOUT)
+        if success:
+            (x, P) = update(x, hx(x, BEACON_MAP.values()),
+                            P, z, HJacobian_at(x, BEACON_MAP.values()), R)
         path.append(x)
-        (x, P) = predict(x, P, F, 0)
-        break
+        agent.update(x)
+        dt = time.time() - timestamp
+        (x, P) = predict(x, P, getF(dt), 0)
+        break # TODO: remove
 
     print(f"Var: {np.max(P)}\n"
-          f"Dist: {np.linalg.norm(x[:3] - agent.get_state()[:3])}\n")
+          f"Dist: {np.linalg.norm(np.zeros((3,1)) - agent.get_state()[:3])}\n")
     print(agent.get_state(), '\n\n', x)
     print(P)
 
     path = np.array(path)
     gt_path = np.array(gt_path)
-    mapp(beacons, ax0, path, gt_path)
+    # mapp(beacons, ax0, path, gt_path)
