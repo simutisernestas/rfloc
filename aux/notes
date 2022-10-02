@@ -1,13 +1,13 @@
 TODO:
 - read on UWB https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=uwb&btnG=
-# r**3 variance dependand on distances
-# v cov
-# make the scale of axes in the plot the same, so covariance is seen
-# maybe plot the covariance matrix
-# and think about 3d plotting
-# write some python code to extract the data from tag, through serial connection
-# ask about time line of the project ? can i do the report after new years
-# how does gain traslate distance to pos ??
+- r**3 variance dependand on distances
+- make the scale of axes in the plot the same, so covariance is seen
+- maybe plot the covariance matrix
+- think about 3d plotting
+- ask about time line of the project ? can i do the report after new years
+- how does gain traslate distance to pos ??
+- discuss the report content & description of the project, to be align for delivery
+- try multiple anchors with single tag, lib might not support that :)
 
 RTT could be obtained by FTM protocol but is difficult to obtain bc hardware support is very limited. Even then requires 
 quite a bit of effort to install required driver, firmaware, kernel version. The distance measurement is not that precise.
