@@ -1,19 +1,16 @@
 TODO:
 - read on UWB https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=uwb&btnG=
+- how does gain traslate distance to pos ??
 - make the scale of axes in the plot the same, so covariance is seen
 - maybe plot the covariance matrix
 - think about 3d plotting
+MUST:
 - ask about time line of the project ? can i do the report after new years
-- how does gain traslate distance to pos ??
 - discuss the report content & description of the project, to be align for delivery
 - r**3 variance dependand on distances NOT VALID, at least for small distances
-- make experiment for variance estimation ?
- - two devices, anchor & tag
- - displace by known distance
- - make N measurements, which will hopefully be gaussian distributed
- - calculate variance, put that into the model
+- make experiment for variance estimation and put parameters in the filter !
 - how to determine process noise values ?
-- prob wait till the variances & all other params are estiamed before actual experiment of loc
+- wait till the variances & all other params are estiamed before actual experiment of loc
 - document things! especially experiments, also could start writing simulation part, finish literature review part
 
 DONE:

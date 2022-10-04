@@ -1,4 +1,4 @@
-"""TODO: implement variance estimation experiment code!
+"""Variance data collection
  
  Run indefinitely, until got exit input:
     1) take in distance
@@ -11,6 +11,8 @@
 from getdata import read_measurements
 import time
 import pickle
+
+N_TO_COLLECT = 200
 
 if __name__ == "__main__":
     timeout = 10
@@ -33,15 +35,23 @@ if __name__ == "__main__":
         except:
             print("GT distance was not float, exiting : )")
             exit()
+
         measurements = []
-        for _ in range(120):
-            if len(measurements) == 100:
+        for _ in range(N_TO_COLLECT*3):
+            if len(measurements) == N_TO_COLLECT:
                 break
             devices = read_measurements()
             if len(devices) == 0:
-                print("Didn't get any measurements form read..")
+                # print("Didn't get any measurements form read..")
                 continue
             dist = devices[beacon]["Range"]
             measurements.append(dist)
+            if len(measurements) % 10 == 0:
+                print(f"Collected {len(measurements)} so far : )")
+        
+        if len(measurements) < N_TO_COLLECT:
+            print(f"Less than {N_TO_COLLECT} measurements... Skipping saving...")
+            continue
+
         with open(f'data/{beacon}_{gt_d}_dist.pkl', 'wb') as f:
             pickle.dump(measurements, f, pickle.HIGHEST_PROTOCOL)
