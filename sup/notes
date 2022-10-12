@@ -76,3 +76,39 @@ https://idsc.ethz.ch/education/lectures/recursive-estimation.html
 
 On time-delays in KF
 https://backend.orbit.dtu.dk/ws/portalfiles/portal/4363506/Larsen.pdf
+
+
+
+
+BLE capabilities
+
+BLE RSSI - https://ieeexplore.ieee.org/abstract/document/7275525
+  	 - https://www.mdpi.com/1424-8220/17/5/951/htm has very nice signal/distance plot
+
+BLE RTT with custom oscilator hardware https://link.springer.com/chapter/10.1007/978-3-319-60663-7_19
+
+UWB hardware options
+
+Hardware options - https://www.makerfabs.com/esp32-uwb-ultra-wideband.html
+ 		 - https://www.mouser.dk/ProductDetail/Qorvo/DWS1000?qs=sGAEpiMZZMu3sxpa5v1qrrjDD2pjKdCc3FPbM6GqANw%3D
+			- in combo with https://forum.qorvo.com/t/how-to-read-dws1000-on-arduino-uno/9428/4
+
+UWB dependand on power it could go for even bigger distances, 
+it's just a matter of regulatory policies but in research case
+prob not that relevant. Also interference could be an issue.
+
+
+
+go with makerfabs device & focus more on localisation part of the project
+try to write text about he researched done by now. And start looking at the
+simulation of KF to localise an agent.
+
+
+DESC
+RF-based positioning for Unmanned Autonomous Vehicles
+
+Goal of the project is to:
+1. Investigate different RF technologies for positioning and evaluate their pros and cons, e.g. WiFi, UWB, BLE, etc.
+2. Implement an RF based range measurement method
+3. Compare range measurement using RSSI (Received Signal Strength Indication) and RTT (Round Trip Time)
+4. Implement a Bayesian filter for positioning using aforementioned range measurement(s)
