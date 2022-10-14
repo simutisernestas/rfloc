@@ -4,9 +4,8 @@ TODO:
 - make the scale of axes in the plot the same, so covariance is seen
 - maybe plot the covariance matrix
 - think about 3d plotting
+- dopler effect ?
 MUST:
-- ask about time line of the project ? can i do the report after new years
-- discuss the report content & description of the project, to be align for delivery
 - r**3 variance dependand on distances NOT VALID, at least for small distances
 - make experiment for variance estimation and put parameters in the filter !
 - how to determine process noise values ?
