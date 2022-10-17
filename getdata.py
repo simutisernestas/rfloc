@@ -1,5 +1,6 @@
 import serial
 import time
+import numpy as np
 
 DUMMY = False
 
@@ -15,10 +16,11 @@ def read_measurements(timeout=.1, show=False, dummy=False):
     """ {beacon: {time [ms], range [m], RXpower [dBm]}}
     {'6022': {'ts': 101.0, 'Range': 1.42, 'RXpower': -85.21}}"""
     if dummy or DUMMY:
-        return {'6022': {'ts': 101.0, 'Range': 7.0710678118654755, 'RXpower': -85.21},
-                '6023': {'ts': 101.0, 'Range': 7.0710678118654755, 'RXpower': -85.21},
-                '6024': {'ts': 101.0, 'Range': 7.0710678118654755, 'RXpower': -85.21},
-                '6025': {'ts': 101.0, 'Range': 7.0710678118654755, 'RXpower': -85.21}}
+        r = 7.0710678118654755 + np.random.random()
+        return {'6022': {'ts': 101.0, 'Range': r, 'RXpower': -85.21},
+                '6023': {'ts': 101.0, 'Range': r, 'RXpower': -85.21},
+                '6024': {'ts': 101.0, 'Range': r, 'RXpower': -85.21},
+                '6025': {'ts': 101.0, 'Range': r, 'RXpower': -85.21}}
     devices = {}
     readOut = 0
     start = time.time()

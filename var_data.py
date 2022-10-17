@@ -8,11 +8,15 @@
        a single file in case of any errors : )
 """
 
+from tomlkit import value
 from getdata import read_measurements
 import time
 import pickle
+import numpy as np
 
-N_TO_COLLECT = 200
+# TBC config
+N_TO_COLLECT = 30 
+DEVICE_POS = np.array([4.523, 5.134, .503])
 
 if __name__ == "__main__":
     timeout = 10
@@ -29,15 +33,18 @@ if __name__ == "__main__":
         break
 
     while True:
-        gt_d = input('Provide ground truth distance: ')
+        gt_pos = input('Provide ground truth distance: ')
         try:
-            gt_d = float(gt_d)
+            values = [float(x) for x in gt_pos.split()]
+            if len(values) != 3:
+                raise Exception
+            gt_pos = np.array(values)
         except:
-            print("GT distance was not float, exiting : )")
+            print("Failed while reading GT position, exiting : )")
             exit()
 
         measurements = []
-        for _ in range(N_TO_COLLECT*3):
+        for _ in range(N_TO_COLLECT*2):
             if len(measurements) == N_TO_COLLECT:
                 break
             devices = read_measurements()
@@ -48,10 +55,14 @@ if __name__ == "__main__":
             measurements.append(dist)
             if len(measurements) % 10 == 0:
                 print(f"Collected {len(measurements)} so far : )")
-        
+            if len(measurements) >= N_TO_COLLECT:
+                break
+
         if len(measurements) < N_TO_COLLECT:
-            print(f"Less than {N_TO_COLLECT} measurements... Skipping saving...")
+            print(f"Less than {N_TO_COLLECT} measurements..."
+                  f"Skipping saving...")
             continue
 
-        with open(f'data/{beacon}_{gt_d}_dist.pkl', 'wb') as f:
+        gt_dist = np.linalg.norm(gt_pos - DEVICE_POS, 2)
+        with open(f'data/{beacon}_{gt_dist}_dist.pkl', 'wb') as f:
             pickle.dump(measurements, f, pickle.HIGHEST_PROTOCOL)
