@@ -5,28 +5,38 @@ import numpy as np
 DUMMY = False
 
 try:
-    ser = serial.Serial('/dev/tty.usbserial-02312F0F', 115200, timeout=.01)
+    # ser = serial.Serial('/dev/tty.usbserial-02312F0F', 115200, timeout=.01)
+    ser = serial.Serial('COM8', 115200, timeout=.01)
 except:
     print("DUMMY DATA!")
     DUMMY = True
     pass
 
+def flush(serial):
+    # flush the buffer
+    serial.reset_input_buffer()
+    serial.reset_output_buffer()
+    serial.flush()
 
 def read_measurements(timeout=.1, show=False, dummy=False):
     """ {beacon: {time [ms], range [m], RXpower [dBm]}}
     {'6022': {'ts': 101.0, 'Range': 1.42, 'RXpower': -85.21}}"""
     if dummy or DUMMY:
         r = 7.0710678118654755 + np.random.random()
-        return {'6022': {'ts': 101.0, 'Range': r, 'RXpower': -85.21},
+        return {'6033': {'ts': 101.0, 'Range': r, 'RXpower': -85.21},
                 '6023': {'ts': 101.0, 'Range': r, 'RXpower': -85.21},
                 '6024': {'ts': 101.0, 'Range': r, 'RXpower': -85.21},
                 '6025': {'ts': 101.0, 'Range': r, 'RXpower': -85.21}}
+    flush(ser)
+    
     devices = {}
     readOut = 0
     start = time.time()
     while time.time() - start < timeout:
         try:
             readOut = ser.readline().decode('ascii')
+            if show and readOut != '':
+                print(readOut)
             if "Range" not in readOut:
                 continue
             readOut = readOut.split('\t')
@@ -47,8 +57,6 @@ def read_measurements(timeout=.1, show=False, dummy=False):
         except Exception as e:
             print(f"Something went wrong: {e}")
             continue
-
-    ser.flush()  # flush the buffer
     return devices
 
 

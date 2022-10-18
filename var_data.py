@@ -8,15 +8,14 @@
        a single file in case of any errors : )
 """
 
-from tomlkit import value
 from getdata import read_measurements
 import time
 import pickle
 import numpy as np
 
 # TBC config
-N_TO_COLLECT = 30 
-DEVICE_POS = np.array([4.523, 5.134, .503])
+N_TO_COLLECT = 100
+DEVICE_POS = np.array([5.13, -2.95, 1.20])
 
 if __name__ == "__main__":
     timeout = 10
@@ -44,12 +43,14 @@ if __name__ == "__main__":
             exit()
 
         measurements = []
-        for _ in range(N_TO_COLLECT*2):
+        for _ in range(N_TO_COLLECT*3):
             if len(measurements) == N_TO_COLLECT:
                 break
             devices = read_measurements()
             if len(devices) == 0:
                 # print("Didn't get any measurements form read..")
+                continue
+            if "Range" not in devices[beacon]:
                 continue
             dist = devices[beacon]["Range"]
             measurements.append(dist)
@@ -64,5 +65,5 @@ if __name__ == "__main__":
             continue
 
         gt_dist = np.linalg.norm(gt_pos - DEVICE_POS, 2)
-        with open(f'data/{beacon}_{gt_dist}_dist.pkl', 'wb') as f:
+        with open(f'data/new_{beacon}_{gt_dist}_dist.pkl', 'wb') as f:
             pickle.dump(measurements, f, pickle.HIGHEST_PROTOCOL)
