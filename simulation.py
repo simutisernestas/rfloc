@@ -93,17 +93,18 @@ class Agent:
 
 
 def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray):
+    plt.figure(dpi=300)
     legends = []
-    legends.append("Path")
-    legends.append("GT")
     for i, b in enumerate(beacons):
         x = b.get_pos()
         plt.scatter(x[0], x[1])
         legends.append(str(i))
     plt.scatter(ax0[0], ax0[1], marker='x', s=200)
-    legends.append("Agent")
+    legends.append("x0")
     plt.plot(path[:, 0], path[:, 1])
     plt.plot(gt_path[:, 0], gt_path[:, 1])
+    legends.append("Path")
+    legends.append("GT")
     plt.legend(legends)
     plt.show()
 
@@ -206,13 +207,13 @@ if __name__ == '__main__':
             h[i] = np.linalg.norm(x[:3] - b.get_pos())
         return h
 
-    for i in range(1):
+    for i in range(4):
         counter = 0
         while True:
             # ground truth based on physics
             agent.advance()
             gt_path.append(agent.get_state()[:2])
-            if counter > 1000:
+            if counter > 200:
                 break
             counter += 1
             z = agent.get_beacon_dists()

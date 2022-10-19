@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex main"] 1665331469 "main.aux" "main.bbl" "main" 1665332158
+["bibtex main"] 1666186584 "main.aux" "main.bbl" "main" 1666186642
   "c:/texlive/2021/texmf-dist/bibtex/bst/base/ieeetr.bst" 1632574028 18361 1a00e58565e7f19bf2b3e1bfb82254ae ""
   "document.bib" 1665323799 202 57f70bbfe25977c89906b2648df614b8 ""
-  "main.aux" 1665332134 3332 4f0d95a3a8b9008f4605b2395722194f "pdflatex"
+  "main.aux" 1666186641 4300 f5ba468c24e24ba34ffa53b91af169b0 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
-["pdflatex"] 1665332133 "c:/Users/simut/Desktop/stuff/DTU/courses/rfloc/report/main.tex" "main.pdf" "main" 1665332158
+["pdflatex"] 1666186637 "c:/Users/simut/Desktop/stuff/DTU/courses/rfloc/report/main.tex" "main.pdf" "main" 1666186642
   "c:/Users/simut/Desktop/stuff/DTU/courses/rfloc/report/main.tex" 1665323799 2537 c878a147d5d9daee6987f0ea61fce24a ""
   "c:/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1632574354 2971 def0b6c1f0b107b3b936def894055589 ""
   "c:/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1632574354 2900 1537cc8184ad1792082cd229ecc269f4 ""
@@ -148,20 +148,24 @@
   "c:/texlive/2021/texmf-var/web2c/pdftex/pdflatex.fmt" 1632579115 2797769 be72ae41beb9f3e6c38845be656d34dd ""
   "c:/texlive/2021/texmf.cnf" 1632579038 713 e69b156964470283e0530f5060668171 ""
   "figures/RTT.jpg" 1665327883 87202 48e7b2647774ee5e701888a5df14e622 ""
-  "main.aux" 1665332134 3332 4f0d95a3a8b9008f4605b2395722194f "pdflatex"
-  "main.bbl" 1665331470 49 0eba253fc001332e731e8aba3f23127b "bibtex main"
-  "main.out" 1665332134 2110 fb116014943d0e02ed289b809ef56bbf "pdflatex"
+  "figures/dist_variance.png" 1666186636 79592 23e218607847be1d251c7a7bfe6ff7aa ""
+  "figures/distancePDF.png" 1666186241 378620 3579f1e880c290363514f11f02d9a27b ""
+  "figures/distance_bias.png" 1666186625 69936 b6becd4dac8e5916cc2596d7d67960e7 ""
+  "figures/sim.png" 1666185984 74072 1c6387dd42c3dbe86d217be03e668bd0 ""
+  "main.aux" 1666186641 4300 f5ba468c24e24ba34ffa53b91af169b0 "pdflatex"
+  "main.bbl" 1666186584 49 0eba253fc001332e731e8aba3f23127b "bibtex main"
+  "main.out" 1666186641 2112 50f1ab2b32e91a1396a8edc0f690bf06 "pdflatex"
   "main.tex" 1665323799 2537 c878a147d5d9daee6987f0ea61fce24a ""
-  "main.toc" 1665332134 1261 b6a2f13d37e44b85052ffa75b769ed5d "pdflatex"
+  "main.toc" 1666186641 1263 6c0167e3ba4245e07b91e0fcad630701 "pdflatex"
   "root/dtu.png" 1665323799 11174 2f27405ef441d74db08bf9077ad00a5c ""
   "root/logo.pdf" 1665323799 9933 041ba2d771540e48f0dd40b3e54edcc3 ""
   "sources/0_frontpage.tex" 1665323799 697 d64a38335f2bb746cb60ec3eda6611dc ""
   "sources/1_projectgoals.tex" 1665323799 424 f63f4024a4eb2fab5b5a21b0db8cb7ea ""
   "sources/2_techcomp.tex" 1665332158 6552 03b153c2aeddccdff4619711a04ad2f9 ""
-  "sources/3_practical.tex" 1665332133 537 675f157aaa726c7e138eb664e7682a45 ""
+  "sources/3_practical.tex" 1666186590 3259 a1a25419e7f59e762f8fdbdede7467d5 ""
   (generated)
-  "main.pdf"
-  "main.toc"
   "main.log"
-  "main.aux"
+  "main.toc"
   "main.out"
+  "main.pdf"
+  "main.aux"

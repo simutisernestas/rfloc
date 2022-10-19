@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.9.25)  9 OCT 2022 18:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.9.25)  19 OCT 2022 15:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -592,7 +592,7 @@ Package caption Info: float package is loaded.
 Package caption Info: threeparttable package is loaded.
 Package caption Info: End \AtBeginDocument code.
  (./sources/0_frontpage.tex
-<root/dtu.png, id=63, 123.5817pt x 57.3342pt>
+<root/dtu.png, id=64, 123.5817pt x 57.3342pt>
 File: root/dtu.png Graphic file (type png)
 <use root/dtu.png>
 Package pdftex.def Info: root/dtu.png  used on input line 6.
@@ -603,7 +603,7 @@ Package pdftex.def Info: root/dtu.png  used on input line 6.
 \tf@toc=\write5
 \openout5 = `main.toc'.
 
-<root/logo.pdf, id=89, 248.93pt x 58.2175pt>
+<root/logo.pdf, id=90, 248.93pt x 58.2175pt>
 File: root/logo.pdf Graphic file (type pdf)
 <use root/logo.pdf>
 Package pdftex.def Info: root/logo.pdf  used on input line 79.
@@ -618,7 +618,7 @@ File: root/logo.pdf Graphic file (type pdf)
 Package pdftex.def Info: root/logo.pdf  used on input line 86.
 (pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
  [1] (./sources/2_techcomp.tex
-<figures/RTT.jpg, id=105, 1183.42125pt x 527.72156pt>
+<figures/RTT.jpg, id=106, 1183.42125pt x 527.72156pt>
 File: figures/RTT.jpg Graphic file (type jpg)
 <use figures/RTT.jpg>
 Package pdftex.def Info: figures/RTT.jpg  used on input line 29.
@@ -632,12 +632,48 @@ File: root/logo.pdf Graphic file (type pdf)
 <use root/logo.pdf>
 Package pdftex.def Info: root/logo.pdf  used on input line 62.
 (pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
- [3 <./figures/RTT.jpg>]) (./sources/3_practical.tex)
+ [3 <./figures/RTT.jpg>]) (./sources/3_practical.tex
+<figures/sim.png, id=125, 616.704pt x 331.2375pt>
+File: figures/sim.png Graphic file (type png)
+<use figures/sim.png>
+Package pdftex.def Info: figures/sim.png  used on input line 10.
+(pdftex.def)             Requested size: 469.47049pt x 252.16261pt.
+<figures/distancePDF.png, id=127, 1445.4pt x 939.51pt>
+File: figures/distancePDF.png Graphic file (type png)
+<use figures/distancePDF.png>
+Package pdftex.def Info: figures/distancePDF.png  used on input line 21.
+(pdftex.def)             Requested size: 469.47049pt x 305.15077pt.
+<figures/distance_bias.png, id=129, 433.62pt x 289.08pt>
+File: figures/distance_bias.png Graphic file (type png)
+<use figures/distance_bias.png>
+Package pdftex.def Info: figures/distance_bias.png  used on input line 28.
+(pdftex.def)             Requested size: 469.47049pt x 312.99571pt.
+File: root/logo.pdf Graphic file (type pdf)
+<use root/logo.pdf>
+Package pdftex.def Info: root/logo.pdf  used on input line 32.
+(pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
+ [4]
+File: root/logo.pdf Graphic file (type pdf)
+<use root/logo.pdf>
+Package pdftex.def Info: root/logo.pdf  used on input line 32.
+(pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
+ [5 <./figures/sim.png> <./figures/distancePDF.png>]
+<figures/dist_variance.png, id=146, 433.62pt x 289.08pt>
+File: figures/dist_variance.png Graphic file (type png)
+<use figures/dist_variance.png>
+Package pdftex.def Info: figures/dist_variance.png  used on input line 36.
+(pdftex.def)             Requested size: 469.47049pt x 312.99571pt.
+)
 File: root/logo.pdf Graphic file (type pdf)
 <use root/logo.pdf>
 Package pdftex.def Info: root/logo.pdf  used on input line 96.
 (pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
- [4] (./main.bbl
+ [6 <./figures/distance_bias.png>]
+File: root/logo.pdf Graphic file (type pdf)
+<use root/logo.pdf>
+Package pdftex.def Info: root/logo.pdf  used on input line 96.
+(pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
+ [7 <./figures/dist_variance.png>] (./main.bbl
 
 LaTeX Warning: Empty `thebibliography' environment on input line 3.
 
@@ -647,23 +683,23 @@ File: root/logo.pdf Graphic file (type pdf)
 <use root/logo.pdf>
 Package pdftex.def Info: root/logo.pdf  used on input line 102.
 (pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
-[5] (./main.aux)
+[8] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: FB116014943D0E02ED289B809EF56BBF;2110.
+(rerunfilecheck)             Checksum: 50F1AB2B32E91A1396A8EDC0F690BF06;2112.
  ) 
 Here is how much of TeX's memory you used:
- 16425 strings out of 478599
- 256192 string characters out of 5858101
+ 16464 strings out of 478599
+ 257060 string characters out of 5858101
  913357 words of memory out of 5000000
- 33979 multiletter control sequences out of 15000+600000
+ 34008 multiletter control sequences out of 15000+600000
  415400 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  110i,14n,118p,1631b,398s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfxc1200.pfb>
-Output written on main.pdf (7 pages, 283902 bytes).
+Output written on main.pdf (10 pages, 914168 bytes).
 PDF statistics:
- 198 PDF objects out of 1000 (max. 8388607)
- 158 compressed objects within 2 object streams
- 22 named destinations out of 1000 (max. 500000)
- 136 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 229 PDF objects out of 1000 (max. 8388607)
+ 178 compressed objects within 2 object streams
+ 29 named destinations out of 1000 (max. 500000)
+ 156 words of extra memory for PDF output out of 10000 (max. 10000000)
 

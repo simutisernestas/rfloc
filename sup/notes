@@ -1,25 +1,24 @@
 TODO:
 - read on UWB https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=uwb&btnG=
-- how does gain traslate distance to pos ??
-- make the scale of axes in the plot the same, so covariance is seen
+- how does gain translate distance to pos ??
+- scale of axes in terms of cov ??
 - maybe plot the covariance matrix
 - think about 3d plotting
 - dopler effect ?
 MUST:
-- r**3 variance dependand on distances NOT VALID, at least for small distances
+- r**3 variance dependant on distances NOT VALID, at least for small distances
 - make experiment for variance estimation and put parameters in the filter !
 - how to determine process noise values ?
-- wait till the variances & all other params are estiamed before actual experiment of loc
 - document things! especially experiments, also could start writing simulation part, finish literature review part
 
 DONE:
 - try multiple anchors with single tag, lib might not support that :) it does at least for two
 
 RTT could be obtained by FTM protocol but is difficult to obtain bc hardware support is very limited. Even then requires 
-quite a bit of effort to install required driver, firmaware, kernel version. The distance measurement is not that precise.
+quite a bit of effort to install required driver, firmware, kernel version. The distance measurement is not that precise.
 Best case scenario gives 1-2m accuracy which is nice but more crude estimation would also work.
 
-Positioning base on WiFi signal strenght is way easier. Basically could be implemented with any WiFi card without spending
+Positioning base on WiFi signal strength is way easier. Basically could be implemented with any WiFi card without spending
 additional time on setup. Accuracy is worse ~10m. But meets the requirements and prob is worth trying first before going to
 alternatives. Turns out that the distance to signal curve flattens out at around 20m and cannot measure distances beyond that...
 
