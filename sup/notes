@@ -103,7 +103,7 @@ simulation of KF to localise an agent.
 
 
 DESC
-RF-based positioning for Unmanned Autonomous Vehicles
+RF-based positioning for Unmanned Aerial Vehicles
 
 Goal of the project is to:
 1. Investigate different RF technologies for positioning and evaluate their pros and cons, e.g. WiFi, UWB, BLE, etc.
