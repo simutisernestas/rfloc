@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.9.25)  28 OCT 2022 08:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.9.25)  28 OCT 2022 11:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -496,24 +496,24 @@ File: lstlang1.sty 2020/03/24 1.8d listings language file
  (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 68.
-LaTeX Font Info:    ... okay on input line 68.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 68.
-LaTeX Font Info:    ... okay on input line 68.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 68.
-LaTeX Font Info:    ... okay on input line 68.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 68.
-LaTeX Font Info:    ... okay on input line 68.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 68.
-LaTeX Font Info:    ... okay on input line 68.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 68.
-LaTeX Font Info:    ... okay on input line 68.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 68.
-LaTeX Font Info:    ... okay on input line 68.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 68.
-LaTeX Font Info:    ... okay on input line 68.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 68.
-LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -569,7 +569,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (c:/texlive/2021/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring OFF on input line 68.
+Package hyperref Info: Link coloring OFF on input line 67.
  (c:/texlive/2021/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
  (c:/texlive/2021/texmf-dist/tex/latex/refcount/refcount.sty
@@ -579,16 +579,16 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count322
 )
-LaTeX Info: Redefining \ref on input line 68.
-LaTeX Info: Redefining \pageref on input line 68.
-LaTeX Info: Redefining \nameref on input line 68.
+LaTeX Info: Redefining \ref on input line 67.
+LaTeX Info: Redefining \pageref on input line 67.
+LaTeX Info: Redefining \nameref on input line 67.
  (./main.out) (./main.out)
 \@outlinefile=\write4
 \openout4 = `main.out'.
 
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
-(lastpage)             ! on input line 68.
+(lastpage)             ! on input line 67.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: threeparttable package is loaded.
@@ -608,118 +608,129 @@ Package pdftex.def Info: root/dtu.png  used on input line 6.
 <root/logo.pdf, id=90, 248.93pt x 58.2175pt>
 File: root/logo.pdf Graphic file (type pdf)
 <use root/logo.pdf>
-Package pdftex.def Info: root/logo.pdf  used on input line 79.
+Package pdftex.def Info: root/logo.pdf  used on input line 78.
 (pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.79 \newpage
+l.78 \newpage
               [1 <./root/logo.pdf>] (./sources/1_projectgoals.tex)
 File: root/logo.pdf Graphic file (type pdf)
 <use root/logo.pdf>
-Package pdftex.def Info: root/logo.pdf  used on input line 86.
+Package pdftex.def Info: root/logo.pdf  used on input line 85.
 (pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
  [1] (./sources/2_techcomp.tex
-<figures/RTT.jpg, id=106, 1183.42125pt x 527.72156pt>
+<figures/RSSICurves.jpg, id=107, 871.75688pt x 682.04813pt>
+File: figures/RSSICurves.jpg Graphic file (type jpg)
+<use figures/RSSICurves.jpg>
+Package pdftex.def Info: figures/RSSICurves.jpg  used on input line 25.
+(pdftex.def)             Requested size: 469.47049pt x 367.3014pt.
+<figures/RTT.jpg, id=112, 1183.42125pt x 527.72156pt>
 File: figures/RTT.jpg Graphic file (type jpg)
 <use figures/RTT.jpg>
-Package pdftex.def Info: figures/RTT.jpg  used on input line 29.
+Package pdftex.def Info: figures/RTT.jpg  used on input line 34.
 (pdftex.def)             Requested size: 469.47049pt x 209.34557pt.
 File: root/logo.pdf Graphic file (type pdf)
 <use root/logo.pdf>
-Package pdftex.def Info: root/logo.pdf  used on input line 34.
+Package pdftex.def Info: root/logo.pdf  used on input line 37.
 (pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
  [2]
 File: root/logo.pdf Graphic file (type pdf)
 <use root/logo.pdf>
-Package pdftex.def Info: root/logo.pdf  used on input line 62.
+Package pdftex.def Info: root/logo.pdf  used on input line 37.
 (pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
- [3 <./figures/RTT.jpg>]) (./sources/3_practical.tex
+ [3 <./figures/RSSICurves.jpg>]
 File: root/logo.pdf Graphic file (type pdf)
 <use root/logo.pdf>
-Package pdftex.def Info: root/logo.pdf  used on input line 42.
+Package pdftex.def Info: root/logo.pdf  used on input line 61.
 (pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
- [4] (c:/texlive/2021/texmf-dist/tex/latex/listings/lstlang1.sty
+ [4 <./figures/RTT.jpg>]) (./sources/3_practical.tex
+File: root/logo.pdf Graphic file (type pdf)
+<use root/logo.pdf>
+Package pdftex.def Info: root/logo.pdf  used on input line 36.
+(pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
+ [5] (c:/texlive/2021/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2020/03/24 1.8d listings language file
 )
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 69.
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 70.
  (c:/texlive/2021/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 70.
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 71.
+
+Overfull \hbox (23.49426pt too wide) in paragraph at lines 69--85
+[]$[]$
+ []
+
 File: root/logo.pdf Graphic file (type pdf)
 <use root/logo.pdf>
-Package pdftex.def Info: root/logo.pdf  used on input line 84.
+Package pdftex.def Info: root/logo.pdf  used on input line 85.
 (pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
- [5]
-<figures/sim.png, id=154, 616.704pt x 331.2375pt>
+[6]
+<figures/sim.png, id=164, 616.704pt x 331.2375pt>
 File: figures/sim.png Graphic file (type png)
 <use figures/sim.png>
-Package pdftex.def Info: figures/sim.png  used on input line 88.
+Package pdftex.def Info: figures/sim.png  used on input line 90.
 (pdftex.def)             Requested size: 469.47049pt x 252.16261pt.
-<figures/distancePDF.png, id=156, 1445.4pt x 939.51pt>
+<figures/distancePDF.png, id=166, 1445.4pt x 939.51pt>
 File: figures/distancePDF.png Graphic file (type png)
 <use figures/distancePDF.png>
-Package pdftex.def Info: figures/distancePDF.png  used on input line 97.
+Package pdftex.def Info: figures/distancePDF.png  used on input line 99.
 (pdftex.def)             Requested size: 469.47049pt x 305.15077pt.
-File: root/logo.pdf Graphic file (type pdf)
-<use root/logo.pdf>
-Package pdftex.def Info: root/logo.pdf  used on input line 101.
-(pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
- [6 <./figures/sim.png>]
-<figures/distance_bias.png, id=166, 433.62pt x 289.08pt>
-File: figures/distance_bias.png Graphic file (type png)
-<use figures/distance_bias.png>
-Package pdftex.def Info: figures/distance_bias.png  used on input line 104.
-(pdftex.def)             Requested size: 469.47049pt x 312.99571pt.
-<figures/dist_variance.png, id=168, 433.62pt x 289.08pt>
-File: figures/dist_variance.png Graphic file (type png)
-<use figures/dist_variance.png>
-Package pdftex.def Info: figures/dist_variance.png  used on input line 112.
-(pdftex.def)             Requested size: 469.47049pt x 312.99571pt.
-)
-File: root/logo.pdf Graphic file (type pdf)
-<use root/logo.pdf>
-Package pdftex.def Info: root/logo.pdf  used on input line 96.
-(pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
- [7 <./figures/distancePDF.png>]
-File: root/logo.pdf Graphic file (type pdf)
-<use root/logo.pdf>
-Package pdftex.def Info: root/logo.pdf  used on input line 96.
-(pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
- [8 <./figures/distance_bias.png>]
-File: root/logo.pdf Graphic file (type pdf)
-<use root/logo.pdf>
-Package pdftex.def Info: root/logo.pdf  used on input line 96.
-(pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
- [9 <./figures/dist_variance.png>] (./main.bbl
-
-LaTeX Warning: Empty `thebibliography' environment on input line 3.
-
-) 
-AED: lastpage setting LastPage
 File: root/logo.pdf Graphic file (type pdf)
 <use root/logo.pdf>
 Package pdftex.def Info: root/logo.pdf  used on input line 102.
 (pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
-[10] (./main.aux)
+ [7 <./figures/sim.png>]
+<figures/distance_bias.png, id=184, 433.62pt x 289.08pt>
+File: figures/distance_bias.png Graphic file (type png)
+<use figures/distance_bias.png>
+Package pdftex.def Info: figures/distance_bias.png  used on input line 106.
+(pdftex.def)             Requested size: 469.47049pt x 312.99571pt.
+File: root/logo.pdf Graphic file (type pdf)
+<use root/logo.pdf>
+Package pdftex.def Info: root/logo.pdf  used on input line 110.
+(pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
+ [8 <./figures/distancePDF.png>]
+<figures/dist_variance.png, id=194, 433.62pt x 289.08pt>
+File: figures/dist_variance.png Graphic file (type png)
+<use figures/dist_variance.png>
+Package pdftex.def Info: figures/dist_variance.png  used on input line 114.
+(pdftex.def)             Requested size: 469.47049pt x 312.99571pt.
+)
+File: root/logo.pdf Graphic file (type pdf)
+<use root/logo.pdf>
+Package pdftex.def Info: root/logo.pdf  used on input line 92.
+(pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
+ [9 <./figures/distance_bias.png>]
+File: root/logo.pdf Graphic file (type pdf)
+<use root/logo.pdf>
+Package pdftex.def Info: root/logo.pdf  used on input line 95.
+(pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
+ [10 <./figures/dist_variance.png>] (./main.bbl) 
+AED: lastpage setting LastPage
+File: root/logo.pdf Graphic file (type pdf)
+<use root/logo.pdf>
+Package pdftex.def Info: root/logo.pdf  used on input line 101.
+(pdftex.def)             Requested size: 152.07877pt x 35.56593pt.
+[11] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 50F1AB2B32E91A1396A8EDC0F690BF06;2112.
+(rerunfilecheck)             Checksum: 0DE7F1C2446FDF0A600F717F4F06B086;1945.
  ) 
 Here is how much of TeX's memory you used:
- 17187 strings out of 478599
- 264849 string characters out of 5858101
- 992620 words of memory out of 5000000
- 34700 multiletter control sequences out of 15000+600000
+ 17204 strings out of 478599
+ 265157 string characters out of 5858101
+ 988283 words of memory out of 5000000
+ 34711 multiletter control sequences out of 15000+600000
  420322 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 110i,15n,118p,1631b,1692s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 110i,14n,118p,1631b,1754s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfxc1200.pfb>
-Output written on main.pdf (12 pages, 1048300 bytes).
+Output written on main.pdf (13 pages, 1207646 bytes).
 PDF statistics:
- 302 PDF objects out of 1000 (max. 8388607)
- 228 compressed objects within 3 object streams
- 38 named destinations out of 1000 (max. 500000)
- 156 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 322 PDF objects out of 1000 (max. 8388607)
+ 244 compressed objects within 3 object streams
+ 43 named destinations out of 1000 (max. 500000)
+ 161 words of extra memory for PDF output out of 10000 (max. 10000000)
 

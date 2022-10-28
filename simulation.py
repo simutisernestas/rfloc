@@ -116,10 +116,10 @@ def update(x, hx, P, Z, H, R):
     Xprime = x + K @ y
     KH = K @ H
     I_KH = (np.eye(KH.shape[0]) - KH)
-    # Pprime = I_KH @ P @ I_KH.T + K @ R @ K.T
     Pprime = I_KH @ P
     return (Xprime, Pprime)
 
+# Pprime = I_KH @ P @ I_KH.T + K @ R @ K.T
 
 def predict(x, P, F, u):
     Xprime = F @ x + u
