@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex main"] 1666806331 "main.aux" "main.bbl" "main" 1666807018
+["bibtex main"] 1666940261 "main.aux" "main.bbl" "main" 1666940385
   "c:/texlive/2021/texmf-dist/bibtex/bst/base/ieeetr.bst" 1632574028 18361 1a00e58565e7f19bf2b3e1bfb82254ae ""
   "document.bib" 1665323799 202 57f70bbfe25977c89906b2648df614b8 ""
-  "main.aux" 1666807015 4306 2eb80e8004b470e08171c00baf523c60 "pdflatex"
+  "main.aux" 1666940384 4306 355eeb4ddc7bce8dfe55666b78ffbdaf "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
-["pdflatex"] 1666807008 "c:/Users/simut/Desktop/stuff/DTU/courses/rfloc/report/main.tex" "main.pdf" "main" 1666807018
+["pdflatex"] 1666940377 "c:/Users/simut/Desktop/stuff/DTU/courses/rfloc/report/main.tex" "main.pdf" "main" 1666940385
   "c:/Users/simut/Desktop/stuff/DTU/courses/rfloc/report/main.tex" 1666806777 2561 d19ea113c8d2c7e67e5e5debe87f821e ""
   "c:/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1632574354 2971 def0b6c1f0b107b3b936def894055589 ""
   "c:/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1632574354 2900 1537cc8184ad1792082cd229ecc269f4 ""
@@ -177,20 +177,20 @@
   "figures/distancePDF.png" 1666186241 378620 3579f1e880c290363514f11f02d9a27b ""
   "figures/distance_bias.png" 1666186625 69936 b6becd4dac8e5916cc2596d7d67960e7 ""
   "figures/sim.png" 1666185984 74072 1c6387dd42c3dbe86d217be03e668bd0 ""
-  "main.aux" 1666807015 4306 2eb80e8004b470e08171c00baf523c60 "pdflatex"
-  "main.bbl" 1666806332 49 0eba253fc001332e731e8aba3f23127b "bibtex main"
-  "main.out" 1666807015 2112 50f1ab2b32e91a1396a8edc0f690bf06 "pdflatex"
+  "main.aux" 1666940384 4306 355eeb4ddc7bce8dfe55666b78ffbdaf "pdflatex"
+  "main.bbl" 1666940261 49 0eba253fc001332e731e8aba3f23127b "bibtex main"
+  "main.out" 1666940384 2112 50f1ab2b32e91a1396a8edc0f690bf06 "pdflatex"
   "main.tex" 1666806777 2561 d19ea113c8d2c7e67e5e5debe87f821e ""
-  "main.toc" 1666807015 1264 e8c363a623ce0583283527d26592f1af "pdflatex"
+  "main.toc" 1666940384 1264 ff34f07fc214d485e0b083d9e57c5f12 "pdflatex"
   "root/dtu.png" 1665323799 11174 2f27405ef441d74db08bf9077ad00a5c ""
   "root/logo.pdf" 1665323799 9933 041ba2d771540e48f0dd40b3e54edcc3 ""
   "sources/0_frontpage.tex" 1666806783 693 c2e1080ca11fe6a1a5a7b581ff971cff ""
   "sources/1_projectgoals.tex" 1666806878 467 762aadae8ea11a41c35c5f833b2a999d ""
   "sources/2_techcomp.tex" 1665332158 6552 03b153c2aeddccdff4619711a04ad2f9 ""
-  "sources/3_practical.tex" 1666807017 7750 ad97f0efbf7b16f5e923295441591352 ""
+  "sources/3_practical.tex" 1666940376 8535 bc964244c187e27864482f99cb5ed69c ""
   (generated)
-  "main.out"
   "main.toc"
-  "main.pdf"
   "main.aux"
+  "main.pdf"
   "main.log"
+  "main.out"
