@@ -1,2 +1,11 @@
 __pycache__
 **/*.asv
+report/*.log
+report/*.aux
+report/*.bbl
+report/*.blg
+report/*.fdb_latexmk
+report/*.fls
+report/*.out
+report/*.toc
+
