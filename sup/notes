@@ -13,6 +13,12 @@ MUST:
 - how to determine process noise values ?
 - document things! especially experiments, also could start writing simulation part, finish literature review part
 
+
+source /ros_entrypoint.sh
+source ~/asta_ws/vrpn_ws/devel/setup.bash
+rostopic echo /vrpn_client_node/awww/pose
+
+
 DONE:
 - try multiple anchors with single tag, lib might not support that :) it does at least for two
 
