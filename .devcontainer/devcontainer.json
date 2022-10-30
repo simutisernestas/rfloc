@@ -12,32 +12,22 @@
 		"--cap-add=SYS_PTRACE",
 		"--security-opt=seccomp:unconfined",
 		"--security-opt=apparmor:unconfined",
-		"--volume=/tmp/.X11-unix:/tmp/.X11-unix"
+		"--volume=/tmp/.X11-unix:/tmp/.X11-unix",
+		"--privileged"
 	],
 	"containerEnv": {
 		"DISPLAY": "${localEnv:DISPLAY}",
 		"LIBGL_ALWAYS_SOFTWARE": "1" // Needed for software rendering of opengl
 	},
-	// Set *default* container specific settings.json values on container create.
 	"settings": {
-		// "terminal.integrated.profiles.linux": {
-		// 	"bash": {
-		// 		"path": "bash"
-		// 	}
-		// },
-		// "terminal.integrated.defaultProfile.linux": "bash"
+		"terminal.integrated.profiles.linux": {
+			"bash": {
+				"path": "/usr/bin/bash"
+			}
+		},
+		"terminal.integrated.defaultProfile.linux": "bash (container default)"
 	},
 	"extensions": [
-		// "althack.ament-task-provider",
-		// "DotJoshJohnson.xml",
-		// "ms-azuretools.vscode-docker",
-		// "ms-python.python",
-		// "ms-vscode.cpptools",
-		// "redhat.vscode-yaml",
-		// "smilerobotics.urdf",
-		// "streetsidesoftware.code-spell-checker",
-		// "twxs.cmake",
-		// "yzhang.markdown-all-in-one",
-		// "zachflower.uncrustify"
+		"ms-python.python"
 	]
 }
