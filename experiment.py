@@ -7,12 +7,12 @@ from bagpy import bagreader
 import pandas as pd
 
 BEACON_MAP = {
-    "54990": Beacon("54990", np.array([-1.51, 3.32, 1.05])),
-    "49837": Beacon("49837", np.array([4.22, 2.38, .7])),
-    "61015": Beacon("61015", np.array([2.51, -6.11, .009])),
+    "20725": Beacon("20725", np.array([-1.51, 3.32, 1.05])),
+    "52422": Beacon("52422", np.array([4.22, 2.38, .7])),
+    "43209": Beacon("43209", np.array([2.51, -6.11, .009])),
     "27570": Beacon("27570", np.array([-3.99, -6.07, .41])),
 }
-BAG_NAME = "2022-10-31-13-20-55.bag"
+BAG_NAME = "2022-10-31-15-05-16.bag"
 
 # TODO: unused
 # def get_measurements(timeout=.1):
@@ -49,15 +49,16 @@ if __name__ == '__main__':
     df = pd.read_csv(pose_csv)
     df = df.reset_index()
     for index, row in df.iterrows():
-        ax0[0] = int(row["pose.position.x"])
-        ax0[1] = int(row["pose.position.y"])
-        ax0[2] = int(row["pose.position.z"])
+        ax0[0] = row["pose.position.x"]
+        ax0[1] = row["pose.position.y"]
+        ax0[2] = row["pose.position.z"]+1
         stamp = row["Time"]
         agent.update(ax0, stamp)
         print(f"{stamp}; Agent x0: {ax0}")
         break
 
-    gt_path = np.array([df["pose.position.x"],df["pose.position.y"],df["pose.position.z"]]).T
+    gt_path = np.array(
+        [df["pose.position.x"], df["pose.position.y"], df["pose.position.z"]]).T
 
     b = bagreader(BAG_NAME)
     chatter_csv = b.message_by_topic("/chatter")
@@ -81,9 +82,8 @@ if __name__ == '__main__':
             x = agent.get_state()
             last_update = agent.get_last_update()
             dt = stamp - last_update
-            print(dt)
-            if dt > 1:
-                dt = 0
+            # print(dt)
+            dt = 0
             (x, P) = predict(x, P, getF(dt), 0)
             z = np.array(measurements).reshape((4, 1))
             if (abs(z) > 10).any():

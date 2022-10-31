@@ -13,7 +13,7 @@ class Beacon:
         self.__id = id
         self.__range = None
         self.__last_update = 0
-        self.__LIFESPAN = .05  # s
+        self.__LIFESPAN = .2  # s
 
     def get_pos(self) -> np.array:
         return self.__x
@@ -60,7 +60,6 @@ class Agent:
         A = np.zeros((3, 3))
 
         ds = np.array(  # distances to beacons
-            # [np.linalg.norm(self.get_state()[:3], b.get_pos())for b in beacons]) <= (ground truth)
             [np.linalg.norm(self.get_state()[:3] - b.get_pos()) + np.random.random() for b in beacons])
 
         bp = [b.get_pos() for b in beacons]
