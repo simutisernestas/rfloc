@@ -68,7 +68,7 @@ Distance measurement Jacobian can be computed in code by:
 
 \begin{minipage}{\linewidth}
 \begin{python}
-def dist_jac(x_op, beacons):
+def getH(x_op, beacons):
     H = np.zeros((len(beacons), len(x_op)))
     for i, b in enumerate(beacons):
         H[i][:3] = ((x_op[:3] - b.get_pos()) \

@@ -64,3 +64,12 @@
     #     #     print(np.linalg.norm(sol.x - np.ones((3,))))
     #     # exit()
     #     return sol.x.reshape(3, 1), sol.success
+
+
+# initial ranging, find enough beacons to start localization
+success = False
+while not success:
+    print("Looking for enough active beacons...")
+    (success, z) = get_measurements(1)
+    print(f"Found {z.shape[0]} active beacons...")
+print("Starting system...")
