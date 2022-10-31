@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 class Beacon:
 
-    def __init__(self, id: str, x0: np.ndarray) -> None:
+    def __init__(self, id: str, x0: np.ndarray, lifespan=.2) -> None:
         if x0.shape == (3,) or x0.shape == (1, 3):
             x0 = x0.reshape((3, 1))
         if x0.shape != (3, 1):
@@ -13,14 +13,21 @@ class Beacon:
         self.__id = id
         self.__range = None
         self.__last_update = 0
-        self.__LIFESPAN = .2  # s
+        self.__LIFESPAN = lifespan  # s
 
     def get_pos(self) -> np.array:
         return self.__x
 
     def update_range(self, distance, stamp):
-        self.__range = distance
+        self.__range = distance - self.__get_bias(distance)
         self.__last_update = stamp
+
+    def __get_bias(self, d):
+        # Linear fit coeffs from data
+        # [0.03678752 0.26399485]
+        b = 0.26399485
+        a = 0.03678752
+        return (a*d + b)
 
     def get_range(self, stamp):
         if abs(stamp - self.__last_update) > self.__LIFESPAN:
@@ -33,6 +40,8 @@ class Beacon:
     def get_id(self):
         return self.__id
 
+    def discard_meas(self):
+        self.__range = None
 
 class Agent:
 
@@ -95,25 +104,42 @@ class Agent:
         self.__x = F @ self.__x
 
 
-def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray = None):
-    plt.figure(dpi=150)
-    ax = plt.axes(projection='3d')
+def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray = None, threed=False):
+    plt.figure(1, dpi=150)
     legends = []
-    ax.plot3D(path[:, 0].T[0], path[:, 1].T[0], path[:, 2].T[0])
+    plt.plot(path[:, 0].T[0], path[:, 1].T[0])
     legends.append("Path")
 
     for i, b in enumerate(beacons):
         x = b.get_pos()
-        ax.scatter3D(x[0], x[1], x[2])
-        legends.append(str(i))
-    ax.scatter3D(ax0[0], ax0[1], marker='x', s=200)
+        plt.scatter(x[0], x[1], s=100)
+        legends.append("Beacon " + str(i))
+    plt.scatter(ax0[0], ax0[1], marker='x', s=100)
     legends.append("x0")
 
     if gt_path is not None:
-        ax.plot3D(gt_path[:, 0], gt_path[:, 1], gt_path[:, 2])
+        plt.plot(gt_path[:, 0], gt_path[:, 1])
     legends.append("GT")
+    plt.legend(legends)
 
-    ax.legend(legends)
+    if threed:
+        plt.figure(2, dpi=150)
+        ax = plt.axes(projection='3d')
+        ax.plot3D(path[:, 0].T[0], path[:, 1].T[0], path[:, 2].T[0])
+        # legends.append("Path")
+
+        for i, b in enumerate(beacons):
+            x = b.get_pos()
+            ax.scatter3D(x[0], x[1], x[2], s=100)
+            legends.append(str(i))
+        ax.scatter3D(ax0[0], ax0[1], ax0[2], marker='x', s=100)
+        # legends.append("x0")
+
+        if gt_path is not None:
+            ax.plot3D(gt_path[:, 0], gt_path[:, 1], gt_path[:, 2])
+        # legends.append("GT")
+        ax.legend(legends)
+
     plt.show()
 
 
@@ -121,10 +147,9 @@ def update(x, hx, P, Z, H, R):
     y = Z - hx
     S = H @ P @ H.T + R
     try:
-        K = P @ H.T @ np.linalg.pinv(S)
+        K = P @ H.T @ np.linalg.inv(S)
     except:
-        print(S, H, P, R)
-        exit()
+        raise Exception("Cannot invert S matrix!")
     Xprime = x + K @ y
     KH = K @ H
     I_KH = (np.eye(KH.shape[0]) - KH)
@@ -133,9 +158,9 @@ def update(x, hx, P, Z, H, R):
     return (Xprime, Pprime)
 
 
-def predict(x, P, F, u):
+def predict(x, P, F, u, Pnoise=1):
     Xprime = F @ x + u
-    Pprime = F @ P @ F.T + np.eye(6)  # TODO: handle process noise
+    Pprime = F @ P @ F.T + np.eye(6)*Pnoise
     return (Xprime, Pprime)
 
 

@@ -1,27 +1,13 @@
 TODO:
 - read on UWB https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=uwb&btnG=
-- how does gain translate distance to pos ??
-- scale of axes in terms of cov ??
 - maybe plot the covariance matrix
-- think about 3d plotting
-- vrpn client connected to optitrack
-- network asta 2020
 - heat map of uncertainty
-- make deterministic ID assignment !
-MUST:[]
+- make deterministic ID assignment!
+MUST:
 - r**3 variance dependant on distances NOT VALID, at least for small distances
 - make experiment for variance estimation and put parameters in the filter !
 - how to determine process noise values ?
 - document things! especially experiments, also could start writing simulation part, finish literature review part
-
-
-source /ros_entrypoint.sh
-source ~/asta_ws/vrpn_ws/devel/setup.bash
-rostopic echo /vrpn_client_node/awww/pose
-
-
-DONE:
-- try multiple anchors with single tag, lib might not support that :) it does at least for two
 
 RTT could be obtained by FTM protocol but is difficult to obtain bc hardware support is very limited. Even then requires 
 quite a bit of effort to install required driver, firmware, kernel version. The distance measurement is not that precise.

@@ -10,3 +10,4 @@ report/*.out
 report/*.toc
 asta_workspace_setup
 2022*
+!2022-10-31-15-05-16.bag

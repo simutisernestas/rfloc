@@ -11,6 +11,4 @@ print(df["header.frame_id"].unique())
 
 chatter_csv = b.message_by_topic("/vrpn_client_node/awww/pose")
 df = pd.read_csv(chatter_csv)
-# print(np.array([df["pose.position.x"],df["pose.position.y"],df["pose.position.z"]]))
-
-print(df["pose.position.z"].mean())
+print(df)
