@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 class Beacon:
 
-    def __init__(self, id, x0=np.zeros((3, 1))) -> None:
+    def __init__(self, id: str, x0: np.ndarray) -> None:
         if x0.shape == (3,) or x0.shape == (1, 3):
             x0 = x0.reshape((3, 1))
         if x0.shape != (3, 1):
@@ -96,7 +96,7 @@ class Agent:
         self.__x = F @ self.__x
 
 
-def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray):
+def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray = None):
     plt.figure(dpi=150)
     legends = []
     for i, b in enumerate(beacons):
@@ -106,7 +106,8 @@ def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray):
     plt.scatter(ax0[0], ax0[1], marker='x', s=200)
     legends.append("x0")
     plt.plot(path[:, 0], path[:, 1])
-    plt.plot(gt_path[:, 0], gt_path[:, 1])
+    if gt_path is not None:
+        plt.plot(gt_path[:, 0], gt_path[:, 1])
     legends.append("Path")
     legends.append("GT")
     plt.legend(legends)
@@ -116,7 +117,11 @@ def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray):
 def update(x, hx, P, Z, H, R):
     y = Z - hx
     S = H @ P @ H.T + R
-    K = P @ H.T @ np.linalg.inv(S)
+    try:
+        K = P @ H.T @ np.linalg.pinv(S)
+    except:
+        print(S, H, P, R)
+        exit()
     Xprime = x + K @ y
     KH = K @ H
     I_KH = (np.eye(KH.shape[0]) - KH)
@@ -154,8 +159,10 @@ def getH(x_op: np.ndarray, beacons):  # , beacons: List[Beacon]
     """
     H = np.zeros((len(beacons), len(x_op)))
     for i, b in enumerate(beacons):
-        H[i][:3] = ((x_op[:3] - b.get_pos()) /
-                    np.linalg.norm(x_op[:3] - b.get_pos())).T
+        diff = x_op[:3] - b.get_pos()
+        if (diff == 0.0).all():
+            raise Exception("Division by zero")
+        H[i][:3] = (diff / np.linalg.norm(diff)).T
     return H
 
 

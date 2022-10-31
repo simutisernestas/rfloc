@@ -55,7 +55,7 @@ if __name__ == '__main__':
             state[3] = -12
         elif i == 2:  # go down at 10 m/s
             state[4] = -10
-        agent.update(state)
+        agent.update(state, None)
 
     print(f"Var: {np.max(P)}\n"
           f"Dist: {np.linalg.norm(x[:3] - agent.get_state()[:3])}\n")

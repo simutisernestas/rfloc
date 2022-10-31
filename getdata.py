@@ -7,7 +7,7 @@ DUMMY = False
 
 try:
     if platform == "linux" or platform == "linux2":
-        ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=.01)
+        ser = serial.Serial('/dev/ttyUSB0', 115200, timeout=.01)
     elif platform == "win32":
         ser = serial.Serial('COM8', 115200, timeout=.01)
 except:
@@ -38,7 +38,6 @@ def read_measurements(timeout=.1, show=False, dummy=False):
     readOut = 0
     start = time.time()
     while time.time() - start < timeout:
-        # try:
         readOut = ser.readline().decode('ascii')
         if show and readOut != '':
             print(readOut)
@@ -57,11 +56,6 @@ def read_measurements(timeout=.1, show=False, dummy=False):
             else:
                 device = value
         devices[device] = parsed
-        if show:
-            print(devices)
-        # except Exception as e:
-        #     print(f"Something went wrong: {e}")
-        #     continue
     return devices
 
 
