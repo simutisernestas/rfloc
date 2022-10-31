@@ -13,7 +13,7 @@ class Beacon:
         self.__id = id
         self.__range = None
         self.__last_update = 0
-        self.__LIFESPAN = .1  # s
+        self.__LIFESPAN = .05  # s
 
     def get_pos(self) -> np.array:
         return self.__x
@@ -36,9 +36,9 @@ class Beacon:
 
 class Agent:
 
-    def __init__(self, x0=np.zeros((9, 1))) -> None:
+    def __init__(self, x0=np.zeros((6, 1))) -> None:
         self.__x = x0
-        self.__last_update = 0
+        self.__last_update = None
 
     def update(self, state, stamp) -> None:
         if state.shape != (6, 1):
@@ -98,19 +98,23 @@ class Agent:
 
 def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray = None):
     plt.figure(dpi=150)
+    ax = plt.axes(projection='3d')
     legends = []
+    ax.plot3D(path[:, 0].T[0], path[:, 1].T[0], path[:, 2].T[0])
+    legends.append("Path")
+
     for i, b in enumerate(beacons):
         x = b.get_pos()
-        plt.scatter(x[0], x[1])
+        ax.scatter3D(x[0], x[1], x[2])
         legends.append(str(i))
-    plt.scatter(ax0[0], ax0[1], marker='x', s=200)
+    ax.scatter3D(ax0[0], ax0[1], marker='x', s=200)
     legends.append("x0")
-    plt.plot(path[:, 0], path[:, 1])
+
     if gt_path is not None:
-        plt.plot(gt_path[:, 0], gt_path[:, 1])
-    legends.append("Path")
+        ax.plot3D(gt_path[:, 0], gt_path[:, 1], gt_path[:, 2])
     legends.append("GT")
-    plt.legend(legends)
+
+    ax.legend(legends)
     plt.show()
 
 

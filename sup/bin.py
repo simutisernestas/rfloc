@@ -73,3 +73,11 @@ while not success:
     (success, z) = get_measurements(1)
     print(f"Found {z.shape[0]} active beacons...")
 print("Starting system...")
+
+
+# TODO: if following fails : )
+# RUN echo keyboard-configuration keyboard-configuration/layout select 'English (US)' | sudo debconf-set-selections
+# RUN echo keyboard-configuration keyboard-configuration/layoutcode select 'us' | sudo debconf-set-selections 
+# TODO: source ~/asta_ws/vrpn_ws/devel/setup.bash add this to /ros_entrypoint.sh : )
+# and maybe add ros_entrypoint.sh to ~/.bashrc : )
+# ENTRYPOINT ["/bin/bash", "source /ros_entrypoint.sh"]

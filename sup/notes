@@ -7,6 +7,7 @@ TODO:
 - vrpn client connected to optitrack
 - network asta 2020
 - heat map of uncertainty
+- make deterministic ID assignment !
 MUST:
 - r**3 variance dependant on distances NOT VALID, at least for small distances
 - make experiment for variance estimation and put parameters in the filter !
