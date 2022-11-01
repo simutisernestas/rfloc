@@ -58,19 +58,29 @@ if __name__ == '__main__':
         BEACON_MAP[beacon_id].update_range(meas_range, stamp)
         # print(f"{stamp}; Beacon: {beacon_id}; Range {meas_range}")
         measurements = [v.get_range(stamp) for k, v in BEACON_MAP.items()]
-        got_4_meas = True if None not in measurements else False
-        if got_4_meas:
-            for b in BEACON_MAP.values():
+        z = []
+        idxs = []
+        for i,m in enumerate(measurements):
+            if m is not None:
+                z.append(m)
+                idxs.append(i)
+        # got_4_meas = True if None not in measurements else False
+        # if got_4_meas:
+        last_update = agent.get_last_update()
+        dt = stamp - last_update
+        if (len(z) > 2 and dt > RANGE_MEAS_LIFESPAN) or len(z) == 4:
+            obs_beacons = [list(BEACON_MAP.values())[i] for i in idxs]
+            for b in obs_beacons:
                 b.discard_meas()
             x = agent.get_state()
-            last_update = agent.get_last_update()
-            dt = stamp - last_update
             (x, P) = predict(x, P, getF(dt), 0, Pnoise)
-            z = np.array(measurements).reshape((4, 1))
+            z = np.array(z).reshape((len(z), 1))
             if (abs(z) > 10).any():
                 continue
-            (x, P) = update(x, hx(x, BEACON_MAP.values()),
-                            P, z, getH(x, BEACON_MAP.values()), R)
+            # (x, P) = update(x, hx(x, BEACON_MAP.values()),
+            #                 P, z, getH(x, BEACON_MAP.values()), R)
+            (x, P) = update(x, hx(x, obs_beacons),
+                            P, z, getH(x, obs_beacons), np.diag([Pnoise]*len(z)))
             path.append(x)
             agent.update(x, stamp)
 

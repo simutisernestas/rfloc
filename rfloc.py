@@ -147,7 +147,7 @@ def update(x, hx, P, Z, H, R):
     y = Z - hx
     S = H @ P @ H.T + R
     try:
-        K = P @ H.T @ np.linalg.inv(S)
+        K = P @ H.T @ np.linalg.pinv(S)
     except:
         raise Exception("Cannot invert S matrix!")
     Xprime = x + K @ y
@@ -198,9 +198,10 @@ def hx(x, beacons):
     """
     non-linear measurement func
     """
-    h = np.zeros((4, 1))
+    h = np.zeros((len(beacons), 1))
     for i, b in enumerate(beacons):
         h[i] = np.linalg.norm(x[:3] - b.get_pos())
+        # h[i] = np.linalg.norm(x[:3] - b.get_pos())
     return h
 
 
