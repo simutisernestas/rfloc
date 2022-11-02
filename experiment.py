@@ -15,14 +15,14 @@ BAG_NAME = "2022-10-31-15-05-16.bag"
 if __name__ == '__main__':
     DIM_X = 6
     DIM_Z = 4
-    Pnoise = 3e-4
+    Pnoise = 3e-3
     R = np.diag([Pnoise]*DIM_Z)
-    P = np.eye(DIM_X)
-    P *= 10
+    P = np.eye(DIM_X)*10
 
     fdev = 2.0
     path = []
     gt_path = []
+    Pss = []
 
     agent = Agent()
     ax0 = np.zeros((DIM_X, 1))
@@ -68,7 +68,8 @@ if __name__ == '__main__':
         # if got_4_meas:
         last_update = agent.get_last_update()
         dt = stamp - last_update
-        if (len(z) > 2 and dt > RANGE_MEAS_LIFESPAN) or len(z) == 4:
+        #  and dt > RANGE_MEAS_LIFESPAN
+        if (len(z) > 2) or len(z) == 4:
             obs_beacons = [list(BEACON_MAP.values())[i] for i in idxs]
             for b in obs_beacons:
                 b.discard_meas()
@@ -82,6 +83,7 @@ if __name__ == '__main__':
             (x, P) = update(x, hx(x, obs_beacons),
                             P, z, getH(x, obs_beacons), np.diag([Pnoise]*len(z)))
             path.append(x)
+            Pss.append(P)
             agent.update(x, stamp)
 
     print(f"Var: {np.max(P)}\n"
@@ -91,4 +93,6 @@ if __name__ == '__main__':
     pathlen = path.shape[0]
     path = path[:int(pathlen/fdev), :]
 
-    mapp(BEACON_MAP.values(), ax0, path, gt_path, threed=True)
+    Pss = Pss[:int(pathlen/fdev)]
+
+    mapp(BEACON_MAP.values(), ax0, path, gt_path, Pss, threed=True)    
