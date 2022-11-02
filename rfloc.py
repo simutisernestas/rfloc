@@ -182,7 +182,7 @@ def update(x, hx, P, Z, H, R):
     y = Z - hx
     S = H @ P @ H.T + R
     try:
-        K = P @ H.T @ np.linalg.pinv(S)
+        K = P @ H.T @ np.linalg.inv(S)
     except:
         raise Exception("Cannot invert S matrix!")
     Xprime = x + K @ y
