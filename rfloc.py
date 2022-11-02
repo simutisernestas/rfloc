@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.patches import Ellipse
 
 
 class Beacon:
@@ -42,6 +43,7 @@ class Beacon:
 
     def discard_meas(self):
         self.__range = None
+
 
 class Agent:
 
@@ -104,8 +106,10 @@ class Agent:
         self.__x = F @ self.__x
 
 
-def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray = None, threed=False):
+def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray = None, Ps=None, threed=False):
     plt.figure(1, dpi=150)
+    plt.tight_layout()
+    plt.axis('equal')
     legends = []
     plt.plot(path[:, 0].T[0], path[:, 1].T[0])
     legends.append("Path")
@@ -140,7 +144,38 @@ def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray =
         # legends.append("GT")
         ax.legend(legends)
 
-    plt.show()
+
+def plot_gt_vs_data_with_cov(path, gt, Ps, beacons):
+    plt.figure(123, dpi=150)
+    legends = []
+
+    ax = plt.subplot(111, aspect='equal')
+    ax.plot(path[:, 0].T[0], path[:, 1].T[0])
+    legends.append("Path")
+
+    for i, b in enumerate(beacons):
+        x = b.get_pos()
+        ax.scatter(x[0], x[1], s=100)
+        legends.append("Beacon " + str(i))
+
+    if gt is not None:
+        ax.plot(gt[:, 0], gt[:, 1])
+    legends.append("GT")
+    ax.legend(legends)
+
+    for i, P in enumerate(Ps):
+        if i % 11 != 0:
+            continue
+        P = P[:2, :2]
+        lambda_, v = np.linalg.eig(P)
+        nstd = 3
+        w, h = 2 * nstd * np.sqrt(lambda_)
+        ell = Ellipse(xy=(path[i, 0], path[i, 1]),
+                      width=w, height=h,
+                      angle=np.rad2deg(np.arccos(v[0, 0])), color='black',
+                      linestyle='--')
+        ell.set_facecolor('none')
+        ax.add_artist(ell)
 
 
 def update(x, hx, P, Z, H, R):
@@ -198,9 +233,10 @@ def hx(x, beacons):
     """
     non-linear measurement func
     """
-    h = np.zeros((4, 1))
+    h = np.zeros((len(beacons), 1))
     for i, b in enumerate(beacons):
         h[i] = np.linalg.norm(x[:3] - b.get_pos())
+        # h[i] = np.linalg.norm(x[:3] - b.get_pos())
     return h
 
 
