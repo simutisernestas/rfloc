@@ -125,9 +125,12 @@ def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray =
         plt.plot(gt_path[:, 0], gt_path[:, 1])
     legends.append("GT")
     plt.legend(legends)
+    plt.savefig("report/figures/2d_path.png")
 
     if threed:
         plt.figure(2, dpi=150)
+        plt.tight_layout()
+        plt.axis('equal')
         ax = plt.axes(projection='3d')
         ax.plot3D(path[:, 0].T[0], path[:, 1].T[0], path[:, 2].T[0])
         # legends.append("Path")
@@ -143,6 +146,7 @@ def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray =
             ax.plot3D(gt_path[:, 0], gt_path[:, 1], gt_path[:, 2])
         # legends.append("GT")
         ax.legend(legends)
+        plt.savefig("report/figures/3d_path.png")
 
 
 def plot_gt_vs_data_with_cov(path, gt, Ps, beacons):
@@ -176,7 +180,7 @@ def plot_gt_vs_data_with_cov(path, gt, Ps, beacons):
                       linestyle='--')
         ell.set_facecolor('none')
         ax.add_artist(ell)
-
+    plt.savefig("report/figures/2d_with_cov.png")
 
 def update(x, hx, P, Z, H, R):
     y = Z - hx

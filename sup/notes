@@ -3,6 +3,8 @@ TODO:
 - maybe plot the covariance matrix
 - heat map of uncertainty
 - make deterministic ID assignment!
+- KF evaluation from lcd2 textbook, autocorrelation, x & y seperately
+- take error norm, take a point and compare to the closest point
 MUST:
 - r**3 variance dependant on distances NOT VALID, at least for small distances
 - make experiment for variance estimation and put parameters in the filter !
