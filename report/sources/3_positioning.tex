@@ -1,35 +1,35 @@
-Practical part consists of applying and implementing EKF (Extended Kalman Filter) for estimation of 3D position in space, writing a simulation to validate the filter implementation, tuning KF (Kalman Filter) parameters (mainly evaluating covariances) by real-world experiments, testing out whole system and evaluating localization accuracy.
+Chapter covers application and implementation of EKF (Extended Kalman Filter) for estimation of 3D position in space and writing a simulation to validate the filter implementation.
 
-\subsection{Localization}
+\subsection{EKF}
 
 Due to sensor measurement noise state estimator is necessary. Thus Kalman filter will be implemented and deployed to track agents position assuming noisy observations of distance. Before going into details it's important to think about state evolution and observation models because Kalman filter assumes both to be linear. During project constant velocity model will be used, described by:
 $$
-\left[\begin{array}{c}
-x_{k+1} \\
-y_{k+1} \\
-z_{k+1} \\
-\dot{x}_{k+1} \\
-\dot{y}_{k+1} \\
-\dot{z}_{k+1}
-\end{array}\right]=\left[\begin{array}{cccccc}
-1 & 0 & 0 & \Delta t & 0 & 0 \\
-0 & 1 & 0 & 0 & \Delta t & 0 \\
-0 & 0 & 1 & 0 & 0 & \Delta t \\
-0 & 0 & 0 & 1 & 0 & 0 \\
-0 & 0 & 0 & 0 & 1 & 0 \\
-0 & 0 & 0 & 0 & 0 & 1
-\end{array}\right]\left[\begin{array}{c}
-x_{k} \\
-y_{k} \\
-z_{k} \\
-\dot{x}_{k} \\
-\dot{y}_{k} \\
-\dot{z}_{k}
-\end{array}\right]
+    \left[\begin{array}{c}
+            x_{k+1}       \\
+            y_{k+1}       \\
+            z_{k+1}       \\
+            \dot{x}_{k+1} \\
+            \dot{y}_{k+1} \\
+            \dot{z}_{k+1}
+        \end{array}\right]=\left[\begin{array}{cccccc}
+            1 & 0 & 0 & \Delta t & 0        & 0        \\
+            0 & 1 & 0 & 0        & \Delta t & 0        \\
+            0 & 0 & 1 & 0        & 0        & \Delta t \\
+            0 & 0 & 0 & 1        & 0        & 0        \\
+            0 & 0 & 0 & 0        & 1        & 0        \\
+            0 & 0 & 0 & 0        & 0        & 1
+        \end{array}\right]\left[\begin{array}{c}
+            x_{k}       \\
+            y_{k}       \\
+            z_{k}       \\
+            \dot{x}_{k} \\
+            \dot{y}_{k} \\
+            \dot{z}_{k}
+        \end{array}\right]
 $$
 or
 $$
-\boldsymbol{x}_{k+1} = \boldsymbol{F} \boldsymbol{x}_k
+    \boldsymbol{x}_{k+1} = \boldsymbol{F} \boldsymbol{x}_k
 $$
 which is linear by itself. If it were a system like drone model would be non-linear, more complex and include actuation signal in state transition. Yet the project is aiming at investigating plausibility of localization with UWB antennas rather and experiment will be done by carrying agent device while walking. This cannot be modeled and can be treated as  a black box constant velocity model.
 % https://arxiv.org/pdf/2005.00844.pdf (Derivation of a Constant Velocity Motion Model for Visual Tracking) Could be useful ?
@@ -43,7 +43,7 @@ $$
     \frac{\partial h(x)}{\partial x} = \frac{x-\mathrm{b_x}}{\sqrt{{\left(\mathrm{b_x}-x\right)}^2+{\left(\mathrm{b_y}-y\right)}^2+{\left(\mathrm{b_z}-z\right)}^2}}
 $$
 
-General discrete time EKF is defined as described in the following paragraphs, based on \cite{probrobotics}. Starting with notation: $\hat{\mathbf{x}}_{k \mid k-1}$ represents the  estimate of $\mathbf{x}$ at time instance $k$ given observations up to and including at time $k-1$. \smallskip
+General discrete time EKF is defined as described in the following paragraphs, based on \cite{probrobotics} and \cite{welch1995introduction}. Starting with notation: $\hat{\mathbf{x}}_{k \mid k-1}$ represents the  estimate of $\mathbf{x}$ at time instance $k$ given observations up to and including at time $k-1$. \smallskip
 % TODO: define all variables in EKF ?
 
 \textbf{Prediction step} \smallskip
@@ -67,14 +67,14 @@ $$
 Distance measurement Jacobian can be computed in code by:
 
 \begin{minipage}{\linewidth}
-\begin{python}
-def getH(x_op, beacons):
-    H = np.zeros((len(beacons), len(x_op)))
-    for i, b in enumerate(beacons):
+    \begin{python}
+    def getH(x_op, beacons):
+        H = np.zeros((len(beacons), len(x_op)))
+        for i, b in enumerate(beacons):
         H[i][:3] = ((x_op[:3] - b.get_pos()) \
             / np.linalg.norm(x_op[:3] - b.get_pos())).T
-    return H
-\end{python}
+        return H
+    \end{python}
 \end{minipage}
 % doesn't stay formatted as i wish if i wrap it :'( despair
 % \begin{figure}
@@ -83,35 +83,11 @@ def getH(x_op, beacons):
 % \end{figure}
 function takes in agent position at time $k-1$, beacon list and return partial derivatives of state variables with respect to each of the beacons. It's assumed that beacon number is fixed to 4.
 
-\subsection{Simulation experiments}
+\subsection{Simulation}
 
 Figure \ref{fig:sim} shows a trail run in simulation. Please note that system state is includes the third dimension however for plotting purpose only first two components are shown. The setup is running EKF described in previous section on noisy measurement. Noise is provided by adding a random sample from Gaussian distribution to each distance measurement at every timestamp. Big $X$ is marking the start of a trajectory, $GT$ line is ground truth trajectory generated by applying state transition matrix at each instant of time (moving at arbitrary speeds to cover a rectangle), blue path is the predicted one and lastly the numbered dots represent beacons arbitrarily placed in space.
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{figures/sim.png}
     \caption{Simulation}
     \label{fig:sim}
-\end{figure}
-
-\subsection{Real-world experiments}
-
-First, it's important to address the assumption made in the simulation environment. It was assumed that sensor measurement variance is known. For filter to have good convergence properties we would like to know it up to a reasonable accuracy level when in operation. Therefore, the first experiment was conducted to measure the precision of UWB range measurements compared to a ground truth. DTU ASTA's Opticon system was used to generate ground truth labels (limited to ~10m range) and two UWB devices, one configured as a tag and another one as an anchor. During the experiment anchor was moved to different position around the track, ground truth distance calculated between devices by taking norm of two position from Opticon and corresponding measurement by the means of UWB antennas was recorded. Figure \ref{fig:distancePDF} shows the probability distributions of measured values by real-world experiments in blue and the ground truth in orange.
-\begin{figure}[H]
-    \includegraphics[width=\linewidth]{figures/distancePDF.png}
-    \caption{Distance measurements PDFs.}
-    \label{fig:distancePDF}
-\end{figure}
-
-Looking at the plots one noticeable thing is that mean value of measured values are shifted to the right - meaning sensor gives out bigger distance than it actually is, this could be called bias. The relationship of bias and distance is illustrated in Figure \ref{fig:distance_bias}. Additionally, it can be modeled, at least in this rang,  by a line fit, which is shown in the graph too. It approximates the bias reasonably well and will improve localization accuracy in this distance range. In a way, it's calibrating the sensor so that measurements have the same mean value as ground truths.
-\begin{figure}[H]
-    \includegraphics[width=\linewidth]{figures/distance_bias.png}
-    \caption{Measurement bias over distance.}
-    \label{fig:distance_bias}
-\end{figure}
-
-Next, let's look at the variance and distance relation. The question to ask here if they are dependant on each other or we can use single constant values for all range measurements. Figure \ref{fig:distance_var} shows them on single plot, plus a line fir on the data. It's clearly seen that variance is very low and of the same magnitude through out the data points. Thus, we can conclude that under tested conditions constant variance value can be used in EKF. For instance, an average value of all these variance points.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{figures/dist_variance.png}
-    \caption{Distance over measurement variance.}
-    \label{fig:distance_var}
 \end{figure}

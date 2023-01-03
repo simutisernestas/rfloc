@@ -23,7 +23,7 @@ $$
 thus it is possible, for instance, to fit a curve on a measured experimental values like shown in \cite{rssi-curves}. However, the main disadvantage that for commercial protocols the quantity over distance curve flattens out at certain distance and further it's impossible to tell the a difference between different measurements. The effect can be seen in Figure \ref{fig:rssi-curves}. Due to this limitation the method is not suitable according to application requirements thus later comparison of available RF technologies for positioning will focus mainly on time based methods.
 \begin{figure}
     \includegraphics[width=\linewidth]{figures/RSSICurves.jpg}
-    \caption{Various protocol RSSI over distance curves. Taken from \cite{rssi-curves}.}
+    \caption{Various protocol RSSI over distance curves \cite{rssi-curves}.}
     \label{fig:rssi-curves}
 \end{figure}
   
@@ -32,7 +32,7 @@ thus it is possible, for instance, to fit a curve on a measured experimental val
 These methods are based on measuring radio wave propagation time between (or ToF - \emph{Time of Flight}) antennas/devices and calculating the distance by knowing light speed i.e. $d=ct$, where $c=10e-8$ m/s. One obvious drawback here is that two clock must be synchronized if to infer the distance by ToA (\emph{Time of Arrival}). However, this can be avoided by doing a round trip (in literature referred as TDoA - \emph{Time Difference of Arrival}) and relying solely on one clock. The scheme is illustrated in \ref{fig:RTT} where $T_{prop}$ is propagation time in which we are interested in for ranging applications. The value can be computed by $T_{prop} = \frac{1}{2}(T_{round} - T_{reply})$. Also, Figure \ref{fig:RTT} correctly indicates the scale of $T_{round}$ and $T_{prop}$. Important thing to notice here, if the distances we're measuring are in order of meters, $T_{prop} = d/c$ evaluates to nanosecond scale while for response computer might have to execute hundreds of instructions taking up way more time than the time we're interested in. Thus it's of most importance to know how much time computation takes in the responding device. When selecting/designing a system to use RTT for positioning, responding device must have very fine granularity control of computing resources. If one would try to make these computations on OS (Operating system) level, the time jitter introduced by OS scheduling system would be so large that propagation time would vanish in the error of $T_{reply}$ measurement.
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{figures/RTT.jpg}
-    \caption{Round trip time. Taken from \cite{9179124}.}
+    \caption{Round trip time \cite{9179124}.}
     \label{fig:RTT}
 \end{figure}
   
