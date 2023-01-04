@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.patches import Ellipse
 
 
@@ -114,6 +115,10 @@ def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray =
     plt.plot(path[:, 0].T[0], path[:, 1].T[0])
     legends.append("Path")
 
+    if gt_path is not None:
+        plt.plot(gt_path[:, 0], gt_path[:, 1])
+        legends.append("GT")
+
     for i, b in enumerate(beacons):
         x = b.get_pos()
         plt.scatter(x[0], x[1], s=100)
@@ -121,9 +126,6 @@ def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray =
     plt.scatter(ax0[0], ax0[1], marker='x', s=100)
     legends.append("x0")
 
-    if gt_path is not None:
-        plt.plot(gt_path[:, 0], gt_path[:, 1])
-    legends.append("GT")
     plt.legend(legends)
     plt.savefig("report/figures/2d_path.png")
 
@@ -133,18 +135,16 @@ def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray =
         plt.axis('equal')
         ax = plt.axes(projection='3d')
         ax.plot3D(path[:, 0].T[0], path[:, 1].T[0], path[:, 2].T[0])
-        # legends.append("Path")
+
+        if gt_path is not None:
+            ax.plot3D(gt_path[:, 0], gt_path[:, 1], gt_path[:, 2])
 
         for i, b in enumerate(beacons):
             x = b.get_pos()
             ax.scatter3D(x[0], x[1], x[2], s=100)
             legends.append(str(i))
         ax.scatter3D(ax0[0], ax0[1], ax0[2], marker='x', s=100)
-        # legends.append("x0")
 
-        if gt_path is not None:
-            ax.plot3D(gt_path[:, 0], gt_path[:, 1], gt_path[:, 2])
-        # legends.append("GT")
         ax.legend(legends)
         plt.savefig("report/figures/3d_path.png")
 
@@ -157,15 +157,14 @@ def plot_gt_vs_data_with_cov(path, gt, Ps, beacons):
     ax.plot(path[:, 0].T[0], path[:, 1].T[0])
     legends.append("Path")
 
+    if gt is not None:
+        ax.plot(gt[:, 0], gt[:, 1])
+        legends.append("GT")
+
     for i, b in enumerate(beacons):
         x = b.get_pos()
         ax.scatter(x[0], x[1], s=100)
         legends.append("Beacon " + str(i))
-
-    if gt is not None:
-        ax.plot(gt[:, 0], gt[:, 1])
-    legends.append("GT")
-    ax.legend(legends)
 
     for i, P in enumerate(Ps):
         if i % 11 != 0:
@@ -180,7 +179,10 @@ def plot_gt_vs_data_with_cov(path, gt, Ps, beacons):
                       linestyle='--')
         ell.set_facecolor('none')
         ax.add_artist(ell)
+
+    ax.legend(legends)
     plt.savefig("report/figures/2d_with_cov.png")
+
 
 def update(x, hx, P, Z, H, R):
     y = Z - hx

@@ -1,5 +1,11 @@
 Practical experiments are conducted during the course are discussed here. That includes: tuning KF (Kalman Filter) parameters (mainly evaluating covariances) by real-world experiments, testing out whole system and evaluating positioning accuracy developed in previous chapter.
 
+\subsection{Setup}
+
+Experiments are done with module from \cite{makerfabs}. The board has ESP32 microcontroller and DW1000 UWB antenna chip and provides simple yet effective way to quickly implement/test application utilizing UWB distance measurement. They also provide ready to use code example that can be readily uploaded to microcontroller. It include a library abstraction around the ranging functionality of DW1000 chip. The distance measurements are forwarded to serial port and information is extracted on a laptop for storing and processing later on. Each device can be configured as an anchor or a tag, former being beacon sending distance data to a tag (receiver). Later, a rosbag is recorded in a PC to collect measurements from all the beacons in real time. This is done by parsing serial output of a tag device and publishing these measurement as a ROS topic. There is only one tag and $N$ beacons, the tag also has a marker attached to it that Opticon system can track and publish the ground truth of an agent in real-time as a ROS topic. The mentioned topics are recorded in a single bag so that raw data can be replayed later to test positioning system on a recorded data multiple times offline.
+
+DW1000 chip has many operating modes which have different modes optimized for different properties such as measurement update rate, accuracy and application specific operating distance. The one selected in the experiments is for accuracy, sparse update rate and moderate distance. Every of thiem have different tradeoffs and must be configured depending on case by case basis.
+
 \subsection{Real-world experiments}
 
 First, it's important to address the assumption made in the simulation environment. It was assumed that sensor measurement variance is known. For filter to have good convergence properties we would like to know it up to a reasonable accuracy level when in operation. Therefore, the first experiment was conducted to measure the precision of UWB range measurements compared to a ground truth. DTU ASTA's Opticon system was used to generate ground truth labels (limited to ~10m range) and two UWB devices, one configured as a tag and another one as an anchor. During the experiment anchor was moved to different position around the track, ground truth distance calculated between devices by taking norm of two position from Opticon and corresponding measurement by the means of UWB antennas was recorded. Figure \ref{fig:distancePDF} shows the probability distributions of measured values by real-world experiments in blue and the ground truth in orange.
@@ -24,9 +30,16 @@ Next, let's look at the variance and distance relation. The question to ask here
     \label{fig:distance_var}
 \end{figure}
 
-% TODO: text
-% TODO: what are these axis in 3D one  ? :) prob using the same figure as from the 2d plot
-% TODO: look at the autocorr.py ??   
+Finally, a real experiment was conducted at DTU ASTA with Opticon system being ground truth and the setup closely following the one done in simulation i.e. having four beacons (or anchors) around an area. The tag/agent device was caried by hand to collect distance measurement from each of beacons simultaneously. 
+
+It was difficult to place the beacons in different heights because of the terrain/environment thus it's expected that $z$ component of position estimate will have high variance due to lack of information. Still for validation of prototype even looking at two planar components is enough to evaluate the plausability positioning approach using UWB antennas. At later stages this could be accounted online depending on beacon positions and possibly having more beacons to collect more information about agents position. 
+
+Also worth noting that measurement frequency is 10Hz for each beacon and connection to beacons is not stable through out the experiments, therefore measurements can be delayed or not arrive at a short enough time interval to make an update combining multiple measurements. This hints at a bigger issue - how to use data incoming at different time instances. In this case it's simply handled by a condition statements, saying that if measurement are less than some arbitrary $\Delta t$ apart in time they are considered to have occured at the same instance in time. 
+
+Later, EKF is applied to the data colleted to reconstruct the path taken by the agent, I was trying to walk in an infinity symbol patern. The results are depicted in Figure \ref{fig:exp_2d_path} as a planar 2D visualization with \emph{Path} being the estimated position, \emph{GT} - ground truth (Opticon), \emph{BeaconX} - beacon positions and \emph{$x0$} - the starting point.
+
+% TODO: describe why they are different in length
+% TODO: look at the autocorr.py ??
 
 \begin{figure}[H]
     \centering
