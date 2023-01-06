@@ -36,7 +36,7 @@ It was difficult to place the beacons in different heights because of the terrai
 
 Also worth noting that measurement frequency is 10Hz for each beacon and connection to beacons is not stable through out the experiments, therefore measurements can be delayed or not arrive at a short enough time interval to make an update combining multiple measurements. This hints at a bigger issue - how to use data incoming at different time instances. In this case it's simply handled by a condition statements, saying that if measurement are less than some arbitrary $\Delta t$ apart in time they are considered to have occurred at the same instance in time.
 
-Later, EKF is applied to the data colleted to reconstruct the path taken by the agent, I was trying to walk in an infinity symbol patern. The results are depicted in Figure \ref{fig:exp_2d_path} as a planar 2D visualization with \emph{Path} being the estimated position, \emph{GT} - ground truth (Opticon), \emph{BeaconX} - beacon positions and \emph{$x0$} - the starting point of the trajectory. Figure \ref{fig:exp_3D_path} show the same trajectory in 3 dimensions.
+Later, EKF is applied to the data colleted to reconstruct the path taken by the agent, I was trying to walk in an infinity symbol pattern. The results are depicted in Figure \ref{fig:exp_2d_path} as a planar 2D visualization with \emph{Path} being the estimated position, \emph{GT} - ground truth (Opticon), \emph{BeaconX} - beacon positions and \emph{$x0$} - the starting point of the trajectory. Figure \ref{fig:exp_3D_path} show the same trajectory in 3 dimensions.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{figures/2d_path.png}
@@ -56,9 +56,9 @@ The estimated trajectory has very sharp jumps. This comes from the fact that con
 
 Futhermore it was observed that waiting for 4 measurements from all beacons to arrive at the same time is not optimal meaning if the state is updated from at least 3 measurements it already contains enough information to inform the filter about true position of agent. While doing updates from less than 3 range data points at a time was observed to negatively influence filter performance.
 
-% TODO: z direction variation
+As expected the $z$ dimension is hardest to keep track because all of the beacons are almost in the same plane and give less information about height compared to other two directions.
 
-% TODO: covariance plot
+Figure \ref{fig:exp_2d_path_covariances} depict the same experiment trajectory but with addition of EKF covariance plotted on top of the estimations. Important piece no notice here is that ground truth path is always in the ellipse of covariance, meaning that uncertainty accurately evaluates that estimate could be off by a certain degree and should not be trusted as is, rather should be thought as any point in the ellipse.
 
 \begin{figure}[H]
     \centering
@@ -67,4 +67,8 @@ Futhermore it was observed that waiting for 4 measurements from all beacons to a
     \label{fig:exp_2d_path_covariances}
 \end{figure}
 
+To evaluate filter performance quantitatively auto-correlation function can be computed for each of the dimensions of estimate...???
+
 % TODO: look at the autocorr.py ??
+
+% do interpolation for aligning timestamps and then autocorrelation or error metrics ?
