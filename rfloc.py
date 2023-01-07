@@ -107,7 +107,7 @@ class Agent:
         self.__x = F @ self.__x
 
 
-def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray = None, Ps=None, threed=False):
+def mapp(beacons: list, ax0: np.ndarray, path: np.ndarray, gt_path: np.ndarray = None, Ps = None, threed = False):
     plt.figure(1, dpi=150)
     plt.tight_layout()
     plt.axis('equal')

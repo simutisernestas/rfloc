@@ -74,15 +74,12 @@ while not success:
 print("Starting system...")
 
 
-# TODO: if following fails : )
 # RUN echo keyboard-configuration keyboard-configuration/layout select 'English (US)' | sudo debconf-set-selections
 # RUN echo keyboard-configuration keyboard-configuration/layoutcode select 'us' | sudo debconf-set-selections
-# TODO: source ~/asta_ws/vrpn_ws/devel/setup.bash add this to /ros_entrypoint.sh : )
+# source ~/asta_ws/vrpn_ws/devel/setup.bash add this to /ros_entrypoint.sh : )
 # and maybe add ros_entrypoint.sh to ~/.bashrc : )
 # ENTRYPOINT ["/bin/bash", "source /ros_entrypoint.sh"]
 
-
-# TODO: unused
 # def get_measurements(timeout=.1):
 #     start = time.time()
 #     found_enough_active_beacons = False

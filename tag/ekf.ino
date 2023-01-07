@@ -74,7 +74,7 @@ protected:
 
 private:
   double beacons[4] = {1, 2, 3, 4};
-  double getdt() {return .01;} // TODO:
+  double getdt() {return .01;}
 };
 
 Fuser ekf;

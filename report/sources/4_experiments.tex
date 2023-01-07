@@ -6,7 +6,7 @@ Experiments are done with microcontroller module from Makerfabs \cite{makerfabs}
 
 DW1000 chip has many operating modes which have different modes optimized for different properties such as measurement update rate, accuracy and application specific operating distance. The one selected in the experiments is for accuracy, sparse update rate and moderate distance. Every of them have different tradeoffs and must be configured depending on case by case basis.
 
-\subsection{Real-world experiments}
+\subsection{Results}
 
 First, it's important to address the assumption made in the simulation environment. It was assumed that sensor measurement variance is known. For filter to have good convergence properties we would like to know it up to a reasonable accuracy level when in operation. Therefore, the first experiment was conducted to measure the precision of UWB range measurements compared to a ground truth. DTU ASTA's Opticon system was used to generate ground truth labels (limited to ~10m range) and two UWB devices, one configured as a tag and another one as an anchor. During the experiment anchor was moved to different position around the track, ground truth distance calculated between devices by taking norm of two position from Opticon and corresponding measurement by the means of UWB antennas was recorded. Figure \ref{fig:distancePDF} shows the probability distributions of measured values by real-world experiments in blue and the ground truth in orange.
 \begin{figure}[H]
@@ -71,4 +71,4 @@ To evaluate filter performance quantitatively auto-correlation function can be c
 
 % TODO: look at the autocorr.py ??
 
-% do interpolation for aligning timestamps and then autocorrelation or error metrics ?
+% TODO: numerical error metric: do interpolation for aligning timestamps and then autocorrelation or error metrics ?
