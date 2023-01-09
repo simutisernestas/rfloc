@@ -2,7 +2,7 @@ from bagpy import bagreader
 import pandas as pd
 import numpy as np
 
-b = bagreader("2022-10-31-15-05-16.bag")
+b = bagreader("data/2022-10-31-15-05-16.bag")
 print(b.topic_table)
 
 chatter_csv = b.message_by_topic("/chatter")

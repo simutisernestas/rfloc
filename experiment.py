@@ -11,7 +11,7 @@ BEACON_MAP = {
     "43209": Beacon("43209", np.array([2.51, -6.11, .009]), lifespan=RANGE_MEAS_LIFESPAN),
     "27570": Beacon("27570", np.array([-3.99, -6.07, .41]), lifespan=RANGE_MEAS_LIFESPAN),
 }
-BAG_NAME = "2022-10-31-15-05-16.bag"
+BAG_NAME = "data/2022-10-31-15-05-16.bag"
 
 if __name__ == '__main__':
     DIM_X = 6
@@ -22,6 +22,7 @@ if __name__ == '__main__':
     path = []
     gt_path = []
     Pss = []
+    innos = []
 
     agent = Agent()
     ax0 = np.zeros((DIM_X, 1))
@@ -72,6 +73,8 @@ if __name__ == '__main__':
             if (abs(z) > 15).any():
                 continue
             R = np.diag([Pnoise]*len(z))
+            inno = z - hx(x, obs_beacons)
+            innos.append(inno)
             (x, P) = update(x, hx(x, obs_beacons),
                             P, z, getH(x, obs_beacons), R)
         agent.update(x, stamp)
@@ -85,6 +88,9 @@ if __name__ == '__main__':
     pathlen = path.shape[0]
     path = path[:int(pathlen/fdev), :]
     Pss = Pss[:int(pathlen/fdev)]
+
+    innos = np.array(innos)
+    np.save("data/innos.npy", innos)
 
     plot_gt_vs_data_with_cov(path, gt_path, Pss, BEACON_MAP.values())
     mapp(BEACON_MAP.values(), ax0, path, gt_path, Pss, threed=True)
