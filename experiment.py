@@ -42,12 +42,14 @@ if __name__ == '__main__':
     gt_path = np.array(
         [df["pose.position.x"], df["pose.position.y"], df["pose.position.z"]]).T
     gt_path = gt_path[:int(gtlen/fdev), :]
+    gt_time = np.array(df["Time"])[:int(gtlen/fdev)]
 
     b = bagreader(BAG_NAME, verbose=False)
     chatter_csv = b.message_by_topic("/chatter")
     df = pd.read_csv(chatter_csv)
     df = df.reset_index()
     path = []
+    path_time = []
     for index, row in df.iterrows():
         beacon_id = str(int(row["header.frame_id"]))
         stamp = row["Time"]
@@ -80,6 +82,7 @@ if __name__ == '__main__':
         agent.update(x, stamp)
         Pss.append(P)
         path.append(x)
+        path_time.append(stamp)
 
     print(f"Var: {np.max(P)}\n"
           f"Pos: {agent.get_state()[:3].T}")
@@ -87,11 +90,16 @@ if __name__ == '__main__':
     path = np.array(path)
     pathlen = path.shape[0]
     path = path[:int(pathlen/fdev), :]
+    path_time = path_time[:int(pathlen/fdev)]
     Pss = Pss[:int(pathlen/fdev)]
 
     innos = np.array(innos)
     np.save("data/innos.npy", innos)
+    np.save("data/path.npy", path)
+    np.save("data/path_time.npy", path_time)
+    np.save("data/gt_path.npy", gt_path)
+    np.save("data/gt_time.npy", gt_time)
 
-    plot_gt_vs_data_with_cov(path, gt_path, Pss, BEACON_MAP.values())
-    mapp(BEACON_MAP.values(), ax0, path, gt_path, Pss, threed=True)
-    plt.show()
+    # plot_gt_vs_data_with_cov(path, gt_path, Pss, BEACON_MAP.values())
+    # mapp(BEACON_MAP.values(), ax0, path, gt_path, Pss, threed=True)
+    # plt.show()
