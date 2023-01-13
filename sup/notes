@@ -106,3 +106,8 @@ Goal of the project is to:
 2. Implement an RF based range measurement method
 3. Compare range measurement using RSSI (Received Signal Strength Indication) and RTT (Round Trip Time)
 4. Implement a Bayesian filter for positioning using aforementioned range measurement(s)
+
+
+5G
+
+https://arxiv.org/pdf/2209.01183.pdf

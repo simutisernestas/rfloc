@@ -66,10 +66,12 @@ BLE protocol is widely supported and available even on low-end cheap devices lik
 
 \subsubsection{UWB}
 
-UWB is one of the most widely used radio technology used for positioning applications due to wide support for for ranging and existing protocols to do that. Many chips sets are present on market with off the shelf distance measurement capabilities.
-% TODO: This is very well defined in the official standard 802154z-2020, read the pdf and do a summary.
+UWB is one of the most widely used radio technology for positioning applications because of the wide support for for range measurement and existing protocols to do that. Many chips sets are present on market with off the shelf distance measurement capabilities (like DW1000 \cite{dw1000chip} or U1 in Apple products). This shows the extent to which technology is matured enough to be used in real-world applications.
 
-UWB is select to be used in real-world positioning experiments as most suitable ranging protocol.
+Standard IEEE Std 802.15.4z-2020 \cite{9179124} specifically defines ranging techniques that can be readily implemented in hardware and software of UWB supporting microcontrollers. Method described in the standard is based on RTT with additional measures to increase robustness and precision in practical implementations. However, in essence round trip time approach is selected because of no need to calibrate the clocks on devices and if time measurements are done in a precise way the distance calculation is very straightforward.
 
-% TODO: finish UWB
-% TODO: https://arxiv.org/pdf/2202.02190.pdf check this out too, An Overview of UWB Standards. For more in-depth understanding how the protocol works : )
+Due to convenience, availability and other properties that meets the requirements UWB based ranging is select to be used in special course positioning experiments as most suitable protocol.
+
+\subsection{Other}
+
+There are many RF communication protocols that might be promising for positioning applications. For example, LoRa has potential in long-range low-accuracy positioning application or 5G could be also be considered as alternative approach with similar performance to UWB although not that widely adopted yet. However, these were not investigated in detail here.

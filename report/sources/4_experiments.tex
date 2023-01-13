@@ -1,4 +1,4 @@
-Practical experiments are conducted during the course are discussed here. That includes: tuning KF (Kalman Filter) parameters (mainly evaluating covariances) by real-world experiments, testing out whole system and evaluating positioning accuracy developed in previous chapter.
+Practical experiments are conducted during the course are discussed here. That includes: tuning KF (Kalman Filter) parameters (mainly evaluating covariances) by real-world experiments, testing out whole system and evaluating positioning accuracy developed in previous chapter. Code for conducting experiments and analyzing data is in the attached \emph{zip} file and later will be referenced in text.
 
 \subsection{Setup}
 
@@ -60,6 +60,8 @@ As expected the $z$ dimension is hardest to keep track because all of the beacon
 
 Figure \ref{fig:exp_2d_path_covariances} depict the same experiment trajectory but with addition of EKF covariance plotted on top of the estimations. Important piece no notice here is that ground truth path is always in the ellipse of covariance, meaning that uncertainty accurately evaluates that estimate could be off by a certain degree and should not be trusted as is, rather should be thought as any point in the ellipse.
 
+Following chapter will include quantitative evaluation of filter performance. The code used for obtaining metrics and plots can be found in \verb+kfeval.ipynb+ notebook.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{figures/2d_with_cov.png}
@@ -67,10 +69,38 @@ Figure \ref{fig:exp_2d_path_covariances} depict the same experiment trajectory b
     \label{fig:exp_2d_path_covariances}
 \end{figure}
 
-To evaluate filter performance quantitatively auto-correlation function can be computed for each of the dimensions of estimate...???
+To evaluate filter performance quantitatively several metrics can be used the most simple one could be MSE (Mean squared error), RMSE (Root MSE) or AME (Absolute mean error). But in order to compute these data points i.e. ground truth and estimated have to be aligned in time. This is not the case because Opticon system has one frequency of publishing ground truth and estimated are done in way lower frequency. Therefore each trajectory component $(x,y,z)$ are linearly interpolated in time (using \verb+scipy.interpolate+ module) to be able to select same point in time for fair comparison. For instance, Figure \ref{fig:epx_interp} shows both of them sampled from interpolated trajectories in two dimensions. Table \ref{table:error_matrics} summarizes performance of estimated trajectory quantitatively by metrics mentioned above.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{||c c c c||}
+        \hline
+        Metric & $x$ [m] & $y$ [m] & $z$ [m] \\ [0.5ex]
+        \hline\hline
+        RMS    & 0.187   & 0.132   & 0.276   \\
+        \hline
+        MSE    & 0.035   & 0.017   & 0.076   \\
+        \hline
+        AME    & 0.158   & 0.105   & 0.212   \\
+        \hline
+    \end{tabular}
+    \caption{Error metrics.}
+    \label{table:error_matrics}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/interpolated.png}
+    \caption{2D plot of interpolated trajectories.}
+    \label{fig:epx_interp}
+\end{figure}
 
-% TODO: look at the autocorr.py ??
-% TODO: numerical error metric: do interpolation for aligning timestamps and then autocorrelation or error metrics ?
+UWB chip DW1000 datasheet \cite{dw1000chip} states that it can measure distances up to 10cm accuracy which is inline with the estimation error. Absolute mean error at least in the $(x,y)$ direction is around 10cm, the $z$ component has a bit more and reasons for it were described before.
 
-% TODO:
-\cite{Reid2010EstimationI} all the evaluation of KF performance is here !
+Also Kalman Filter assumes that noise in the measurements is unbiased and white \cite{Reid2010EstimationI}. We've seen before that measurements indeed had some bias involved (it was removed before fusing data into the filter). To make sure that measures taken to remove it were effective we can plot autocorrelation function on innovation $y - \hat{y}$ and see if 95\% of the values fall into $2 \sigma$ interval i.e. $\pm 2 / \sqrt{N}$, $N$ - number of innovations. Figure \ref{fig:inno_whiteness} shows the results and indeed whiteness is confirmed. Three curves are innovation auto-correlations for each of the beacons and the bound is shown in magenta color.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/inno_whiteness.png}
+    \caption{2D plot of interpolated trajectories.}
+    \label{fig:inno_whiteness}
+\end{figure}
+
