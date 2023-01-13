@@ -1,4 +1,4 @@
-Chapter covers application and implementation of EKF (Extended Kalman Filter) for estimation of 3D position in space and writing a simulation to validate the filter implementation.
+With enough distance measurement to a number of known static or dynamic beacons/landmarks one can estimate agents position in space. Chapter covers application and implementation of EKF (Extended Kalman Filter) for estimation of 3D position using range measurements in space and writing a simulation to validate the filter before moving to real-world experiments.
 
 \subsection{EKF}
 
@@ -33,7 +33,7 @@ $$
 $$
 which is linear by itself. $\boldsymbol{F}$ here comes from discretization of continuous time constant velocity model matrix $\mathbf{F}_k=e^{\mathbf{A} \Delta t}$
 
-If it were a system like drone model would be non-linear, more complex and include actuation signal in state transition. Yet the project is aiming at investigating plausibility of localization with UWB antennas rather and experiment will be done by carrying agent device while walking. This cannot be modeled and can be treated as  a black box constant velocity model.
+If it were a system like drone model would be non-linear, more complex and include actuation signal in state transition. Yet the project is aiming at investigating plausibility of localization with UWB antennas rather and experiment will be done by carrying agent device by foot. This cannot be modeled and can be treated as a black box constant velocity model.
 % https://arxiv.org/pdf/2005.00844.pdf (Derivation of a Constant Velocity Motion Model for Visual Tracking) Could be useful ?
 
 However, Euclidean distance measurement model (from beacon to agent) has non-linearity due to the \emph{norm}:
@@ -46,7 +46,6 @@ $$
 $$
 
 General discrete time EKF is defined as described in the following paragraphs, based on \cite{probrobotics} and \cite{welch1995introduction}. Starting with notation: $\hat{\mathbf{x}}_{k \mid k-1}$ represents the  estimate of $\mathbf{x}$ at time instance $k$ given observations up to and including at time $k-1$. \smallskip
-% TODO: define all variables in EKF ? could take it from MPC report : )
 
 \textbf{Prediction step} \smallskip
 $$\hat{\boldsymbol{x}}_{k \mid k-1}=f\left(\hat{\boldsymbol{x}}_{k-1 \mid k-1}, \boldsymbol{u}_k\right)$$
@@ -58,18 +57,16 @@ $$\boldsymbol{S}_k=\boldsymbol{H}_k \boldsymbol{P}_{k \mid k-1} \boldsymbol{H}_k
 $$\boldsymbol{K}_k=\boldsymbol{P}_{k \mid k-1} \boldsymbol{H}_k^T \boldsymbol{S}_k^{-1}$$
 $$\hat{\boldsymbol{x}}_{k \mid k}=\hat{\boldsymbol{x}}_{k \mid k-1}+\boldsymbol{K}_k \tilde{\boldsymbol{y}}_k$$
 $$\boldsymbol{P}_{k \mid k}=\left(\boldsymbol{I}-\boldsymbol{K}_k \boldsymbol{H}_k\right) \boldsymbol{P}_{k \mid k-1}$$
-where state transition and measurement matrices are partial derivatives (\emph{Jacobians}) of state evolution and observation model functions. In constant velocity case $\boldsymbol{f}(\boldsymbol{x})$ is already linear so that part can be discarded.
+$\boldsymbol{h}$ here is non-linear measurement function, $\boldsymbol{H}$ - jacobian of measurement function with respect to state variables, $\boldsymbol{R}$ - measurement covariance, $\boldsymbol{z_k}$ - actual measurement and $\boldsymbol{K}$ being Kalman gain. If our measurement measurement covariance is small (way smaller than process noise covariance) i.e. we bought an expensive sensor with precise capabilities update step it will trust the measurement way more and $\boldsymbol{K}$ gain will be large. If it's the other way around filter will rely on model rather than trusting noisy sensor. These are two tunning nobs for the filter. State transition $\boldsymbol{F}$ and measurement $\boldsymbol{H}$ matrices are partial derivatives (\emph{Jacobians}) of state evolution and observation model functions:
 $$
     \begin{aligned}
         \boldsymbol{F}_k & =\left.\frac{\partial f}{\partial \boldsymbol{x}}\right|_{\hat{\boldsymbol{x}}_{k-1 \mid k-1}, \boldsymbol{u}_k} \\
         \boldsymbol{H}_k & =\left.\frac{\partial h}{\partial \boldsymbol{x}}\right|_{\hat{\boldsymbol{x}}_{k \mid k-1}}
     \end{aligned}
 $$
-
-Distance measurement Jacobian can be computed in code by:
+In constant velocity case $\boldsymbol{f}(\boldsymbol{x})$ is already linear so that part can be discarded i.e. only $\boldsymbol{H}$ is required. Distance measurement Jacobian can be computed in code by:
 \\
 \\
-% TODO: make sure alignment is right
 \begin{minipage}{\linewidth}
     \begin{python}
     def getH(x_op, beacons):
@@ -95,14 +92,14 @@ The code used for implementation of filter and generating plot etc. is uploaded 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.75\linewidth]{figures/sim.png}
+    \includegraphics[width=\linewidth]{figures/sim.png}
     \caption{Simulation}
     \label{fig:sim}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.75\linewidth]{figures/sim_3d_path.png}
+    \includegraphics[width=\linewidth]{figures/sim_3d_path.png}
     \caption{Simulation 3D}
     \label{fig:sim_3d}
 \end{figure}
